@@ -3,11 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import android.os.Environment;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,13 +14,9 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.io.BufferedWriter;
@@ -60,6 +54,21 @@ public class Hardware {
     public DcMotorEx motorRFront = null;
     public DcMotorEx motorRBack = null;
 
+    //Lift
+    public DcMotorEx liftMotor = null;
+    public TouchSensor liftHomeButton = null;
+
+    //Intake
+    public DcMotorEx intakeMotor = null;
+
+    //Pixel Cabin
+    public Servo cabinRotationServo = null;
+    public Servo cabinHoldServo = null;
+
+    //Hanging System
+
+    //Drone Launcher
+    public DcMotorEx droneLaunchMotor = null;
 
     //Distance Sensors
 //    public Rev2mDistanceSensor frontDistance = null;
@@ -78,13 +87,13 @@ public class Hardware {
     private static final String COMMA_DELIMITER = ",";
     private static FileWriter csvFileWriter;
     private BufferedWriter csvFileBufferedWriter;
-    private StringBuilder csvLineData = new StringBuilder(1024*2000);
+    private final StringBuilder csvLineData = new StringBuilder(1024 * 2000);
     private int csvScanNumber = 0;
 
     // CSV file for timers
     private static FileWriter csvFileTimersWriter;
-    private StringBuilder csvTimersLineData = new StringBuilder(512*100);
-    private int csvTimersScanNumber = 0;
+    private final StringBuilder csvTimersLineData = new StringBuilder(512 * 100);
+    private final int csvTimersScanNumber = 0;
 
     // Log file
     private FileWriter logFile;
@@ -174,10 +183,10 @@ public class Hardware {
     public boolean gamepad2_previous_start;
 
 
-    public Hardware(){
+    public Hardware() {
     }
 
-    public void init(HardwareMap ahwMap, OpMode aopMode){
+    public void init(HardwareMap ahwMap, OpMode aopMode) {
         hwMap = ahwMap;
         opMode = aopMode;
 
@@ -215,11 +224,28 @@ public class Hardware {
 //        frontDistance = hwMap.get(Rev2mDistanceSensor.class, "frontDistance");
 //        rearDistance = hwMap.get(Rev2mDistanceSensor.class, "rearDistance");
 
+        //Lift
+        liftMotor = null;
+        liftHomeButton = null;
+
+        //Intake
+        intakeMotor = null;
+
+        //Pixel Cabin
+        cabinRotationServo = null;
+        cabinHoldServo = null;
+
+        //Hanging System
+
+        //Drone Launcher
+        droneLaunchMotor = null;
+
+
         // drive train HW
         imu = hwMap.get(Gyroscope.class, "imu");
-        motorLFront =  new DummyMotor();
+        motorLFront = new DummyMotor();
         motorLBack = new DummyMotor();
-        motorRFront =  new DummyMotor();
+        motorRFront = new DummyMotor();
         motorRBack = new DummyMotor();
         motorLFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         motorLBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -289,7 +315,7 @@ public class Hardware {
         updatePreviousValues();
     }
 
-    public void stop(){
+    public void stop() {
         closeCSVFile();
         closeLogFile();
         closeCSVTimersFile();
@@ -319,11 +345,10 @@ public class Hardware {
                 + "motorRBack power,"
                 + "motorRBack velocity,"
 
-                +"yellow percentage,"
-                +"purple percentage,"
-                +"green percentage,"
-                +"cone position,"
-
+                + "yellow percentage,"
+                + "purple percentage,"
+                + "green percentage,"
+                + "cone position,"
 
 
 //                + "frontDistance,"
@@ -393,7 +418,7 @@ public class Hardware {
 
     private void logCSVData() {
         csvScanNumber++;
-        if(csvScanNumber%5 == 0){
+        if (csvScanNumber % 5 == 0) {
             double[] data = {currentTime,
                     deltaTime,
 
@@ -423,7 +448,6 @@ public class Hardware {
                     webcamPipeline.conePosition,
 
 
-
 //                    frontDistance.getDistance(DistanceUnit.INCH),
 //                    rearDistance.getDistance(DistanceUnit.INCH),
 
@@ -444,45 +468,45 @@ public class Hardware {
                 */
 
                     // gamepad 1 states
-                    gamepad1_current_a?1.0:0.0,
-                    gamepad1_current_b?1.0:0.0,
-                    gamepad1_current_x?1.0:0.0,
-                    gamepad1_current_y?1.0:0.0,
-                    gamepad1_current_dpad_down?1.0:0.0,
-                    gamepad1_current_dpad_left?1.0:0.0,
-                    gamepad1_current_dpad_right?1.0:0.0,
-                    gamepad1_current_dpad_up?1.0:0.0,
-                    gamepad1_current_left_bumper?1.0:0.0,
-                    gamepad1_current_right_bumper?1.0:0.0,
-                    gamepad1_current_left_stick_button?1.0:0.0,
-                    gamepad1_current_right_stick_button?1.0:0.0,
+                    gamepad1_current_a ? 1.0 : 0.0,
+                    gamepad1_current_b ? 1.0 : 0.0,
+                    gamepad1_current_x ? 1.0 : 0.0,
+                    gamepad1_current_y ? 1.0 : 0.0,
+                    gamepad1_current_dpad_down ? 1.0 : 0.0,
+                    gamepad1_current_dpad_left ? 1.0 : 0.0,
+                    gamepad1_current_dpad_right ? 1.0 : 0.0,
+                    gamepad1_current_dpad_up ? 1.0 : 0.0,
+                    gamepad1_current_left_bumper ? 1.0 : 0.0,
+                    gamepad1_current_right_bumper ? 1.0 : 0.0,
+                    gamepad1_current_left_stick_button ? 1.0 : 0.0,
+                    gamepad1_current_right_stick_button ? 1.0 : 0.0,
                     gamepad1_current_left_stick_x,
                     gamepad1_current_left_stick_y,
                     gamepad1_current_left_trigger,
                     gamepad1_current_right_stick_x,
                     gamepad1_current_right_stick_y,
                     gamepad1_current_right_trigger,
-                    gamepad1_current_start?1.0:0.0,
+                    gamepad1_current_start ? 1.0 : 0.0,
                     // gamepad 2 states
-                    gamepad2_current_a?1.0:0.0,
-                    gamepad2_current_b?1.0:0.0,
-                    gamepad2_current_x?1.0:0.0,
-                    gamepad2_current_y?1.0:0.0,
-                    gamepad2_current_dpad_down?1.0:0.0,
-                    gamepad2_current_dpad_left?1.0:0.0,
-                    gamepad2_current_dpad_right?1.0:0.0,
-                    gamepad2_current_dpad_up?1.0:0.0,
-                    gamepad2_current_left_bumper?1.0:0.0,
-                    gamepad2_current_right_bumper?1.0:0.0,
-                    gamepad2_current_left_stick_button?1.0:0.0,
-                    gamepad2_current_right_stick_button?1.0:0.0,
+                    gamepad2_current_a ? 1.0 : 0.0,
+                    gamepad2_current_b ? 1.0 : 0.0,
+                    gamepad2_current_x ? 1.0 : 0.0,
+                    gamepad2_current_y ? 1.0 : 0.0,
+                    gamepad2_current_dpad_down ? 1.0 : 0.0,
+                    gamepad2_current_dpad_left ? 1.0 : 0.0,
+                    gamepad2_current_dpad_right ? 1.0 : 0.0,
+                    gamepad2_current_dpad_up ? 1.0 : 0.0,
+                    gamepad2_current_left_bumper ? 1.0 : 0.0,
+                    gamepad2_current_right_bumper ? 1.0 : 0.0,
+                    gamepad2_current_left_stick_button ? 1.0 : 0.0,
+                    gamepad2_current_right_stick_button ? 1.0 : 0.0,
                     gamepad2_current_left_stick_x,
                     gamepad2_current_left_stick_y,
                     gamepad2_current_left_trigger,
                     gamepad2_current_right_stick_x,
                     gamepad2_current_right_stick_y,
                     gamepad2_current_right_trigger,
-                    gamepad2_current_start?1.0:0.0,
+                    gamepad2_current_start ? 1.0 : 0.0,
 
             };
 
@@ -492,70 +516,57 @@ public class Hardware {
 
     }
 
-    private void createCSVFile()
-    {
+    private void createCSVFile() {
         String header;
 
-        try
-        {
+        try {
             header = createCSVHeaderString();
             DateFormat sdf = new SimpleDateFormat("yyyyMMdd HHmmss ", Locale.US);
             Date dateNow = new Date();
             csvFileWriter = new FileWriter(Environment.getExternalStorageDirectory().getPath()
                     + "/FIRST/logs/"
-                    +  sdf.format(dateNow)
+                    + sdf.format(dateNow)
                     + "Data Log.csv");
 
             csvFileBufferedWriter = new BufferedWriter(csvFileWriter);
             csvFileBufferedWriter.write(header + "\n");
             logMessage(false, "Hardware", "Successfully created file");
 
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             logMessage(true, "Hardware", "Unable to create file");
         }
     }
 
-    private void appendToCSVFile(double[] data)
-    {
-        try
-        {
-            for(double num: data)
-            {
+    private void appendToCSVFile(double[] data) {
+        try {
+            for (double num : data) {
                 csvLineData.append(num).append(COMMA_DELIMITER);
             }
             // replace last comma on line and replace it with a newline
             csvLineData.setCharAt(csvLineData.length() - 1, '\n');
 
-            if(csvScanNumber%2000 == 0){
+            if (csvScanNumber % 2000 == 0) {
                 csvFileBufferedWriter.write(csvLineData.toString());
                 csvLineData.setLength(0);
             }
 
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logMessage(true, "Hardware", "Error writing to file.");
         }
     }
 
-    private void closeCSVFile()
-    {
-        try
-        {
+    private void closeCSVFile() {
+        try {
             csvFileBufferedWriter.write(csvLineData.toString());
             csvFileBufferedWriter.flush();
             csvFileBufferedWriter.close();
             logMessage(false, "Hardware", "Successfully closed CSV file");
-        }
-        catch(IOException e)
-        {
+        } catch (IOException e) {
             logMessage(true, "Hardware", "Couldn't close CSV file.");
         }
     }
 
-    private void createCSVTimersFile()
-    {
+    private void createCSVTimersFile() {
         /*String header;
 
         try
@@ -577,8 +588,7 @@ public class Hardware {
         }*/
     }
 
-    public void appendToCSVTimersFile(double[] data)
-    {
+    public void appendToCSVTimersFile(double[] data) {
         /*try
         {
             for(double num: data)
@@ -601,8 +611,7 @@ public class Hardware {
         }*/
     }
 
-    private void closeCSVTimersFile()
-    {
+    private void closeCSVTimersFile() {
         /*try
         {
             csvFileTimersWriter.append(csvTimersLineData);
@@ -616,41 +625,33 @@ public class Hardware {
         }*/
     }
 
-    private void createLogFile(){
-        try
-        {
+    private void createLogFile() {
+        try {
             DateFormat sdf = new SimpleDateFormat("yyyyMMdd HHmmss ", Locale.US);
             Date dateNow = new Date();
             logFile = new FileWriter(Environment.getExternalStorageDirectory().getPath()
                     + "/FIRST/logs/"
-                    +  sdf.format(dateNow)
+                    + sdf.format(dateNow)
                     + "Event Log.txt",
                     false);
             logFileBufferedWriter = new BufferedWriter(logFile);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void closeLogFile(){
+    private void closeLogFile() {
         // Close the event log file
-        try
-        {
+        try {
             logFileBufferedWriter.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void logMessage(boolean isError, String moduleName, String message)
-    {
+    public void logMessage(boolean isError, String moduleName, String message) {
         String output = "" + String.format("%8.4f", opMode.time) + " ";
-        if(isError)
-        {
+        if (isError) {
             output += "ERROR: ";
         }
         output += moduleName + ": " + message;
@@ -658,9 +659,7 @@ public class Hardware {
         try {
             logFileBufferedWriter.write(output);
             logFileBufferedWriter.newLine();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -677,7 +676,7 @@ public class Hardware {
         return deltaTime;
     }
 
-    private void initGamePadValues(){
+    private void initGamePadValues() {
         // Current gamepad 1 values
         gamepad1_current_a = false;
         gamepad1_current_b = false;
@@ -761,7 +760,7 @@ public class Hardware {
         gamepad2_previous_start = false;
     }
 
-    public void updateValues(){
+    public void updateValues() {
         // update times
         currentTime = opMode.time;
         deltaTime = currentTime - previousTime;

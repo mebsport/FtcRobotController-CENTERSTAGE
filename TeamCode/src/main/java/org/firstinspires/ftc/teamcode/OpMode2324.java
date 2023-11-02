@@ -8,20 +8,20 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @Config
 @TeleOp(name="OpMode 2324", group="A")
 public class OpMode2324 extends OpMode {
-    private Hardware hardware = new Hardware();
+    private final Hardware hardware = new Hardware();
 
     private static final double STRAFE_POWER = 0.50;
     private double prevLPower = 0.0;
     private double prevRPower = 0.0;
-    private boolean isAccelDriveMode = false;
+    private final boolean isAccelDriveMode = false;
 
     private RobotConfiguration robotConfiguration = null;
 
     private boolean isRed = false;
     private boolean isLeftStartingPos = false;
 
-    private boolean isPreviousManualDrive = false;
-    private boolean isCurrentManualDrive = false;
+    private final boolean isPreviousManualDrive = false;
+    private final boolean isCurrentManualDrive = false;
 
     @Override
     public void init() {

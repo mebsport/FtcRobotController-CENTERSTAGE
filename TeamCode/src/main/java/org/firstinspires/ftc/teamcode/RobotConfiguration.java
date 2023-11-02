@@ -56,27 +56,15 @@ public class RobotConfiguration {
 
             //Read Team Color
             tempValue = (char) configFile.read();
-            if (tempValue == 'R') {
-                isRed = true;
-            } else {
-                isRed = false;
-            }
+            isRed = tempValue == 'R';
 
             //Read Team Staring Position
             tempValue = (char) configFile.read();
-            if (tempValue == 'R') {
-                isLeftStartPos = false;
-            } else {
-                isLeftStartPos = true;
-            }
+            isLeftStartPos = tempValue != 'R';
 
             //Read Auto Setting
             tempValue = (char) configFile.read();
-            if (tempValue == 'Y') {
-                stackExtraCones = true;
-            } else {
-                stackExtraCones = false;
-            }
+            stackExtraCones = tempValue == 'Y';
 
             configFile.close();
         }

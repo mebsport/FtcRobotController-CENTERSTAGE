@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Disabled
 public class CalibMode extends OpMode {
-    private Hardware hardware = new Hardware();
+    private final Hardware hardware = new Hardware();
 
     @Override
     public void init() {

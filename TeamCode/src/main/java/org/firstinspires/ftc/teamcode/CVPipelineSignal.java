@@ -10,7 +10,7 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 public class CVPipelineSignal extends OpenCvPipeline {
-    private Telemetry telemetry;
+    private final Telemetry telemetry;
 
     boolean viewportPaused;
 

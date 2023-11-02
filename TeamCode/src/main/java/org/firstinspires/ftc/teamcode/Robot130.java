@@ -25,7 +25,7 @@ public class Robot130 {
 
     String[] loopListValues = {"NOT_READY", "READY", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "DROP_CONE_LIFT_MOVING_DOWN", "DROP_CONE_DROPPING", "DROP_CONE_LIFT_MOVING_UP"};
 
-    private RobCommand robotCommandNull = new RobCommand();
+    private final RobCommand robotCommandNull = new RobCommand();
 
     //Command Stack
     public int currentRobotCommandIndex = -1;
@@ -34,10 +34,10 @@ public class Robot130 {
 
 
     //OTHER
-    private int dropPos = 0;
-    private int preDropPos = 0;
-    private double liftTimeout = 0.0;
-    private double clawOpenTime = 0.0;
+    private final int dropPos = 0;
+    private final int preDropPos = 0;
+    private final double liftTimeout = 0.0;
+    private final double clawOpenTime = 0.0;
 
 
     public Robot130(OpMode opMode, Hardware hardware) {

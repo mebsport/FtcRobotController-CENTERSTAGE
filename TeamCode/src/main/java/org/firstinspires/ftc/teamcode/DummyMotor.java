@@ -12,7 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class DummyMotor implements DcMotorEx {
-    public void setPower(float val){};
+    public void setPower(float val){}
+
     public void setMotorEnable(){}
 
     @Override
@@ -105,8 +106,6 @@ public class DummyMotor implements DcMotorEx {
         return false;
     }
 
-    ;
-
     @Override
     public MotorConfigurationType getMotorType() {
         return null;
@@ -174,9 +173,9 @@ public class DummyMotor implements DcMotorEx {
         return null;
     }
 
-    ;
-    public void setMode(){};
-    public void setPower(){};
+    public void setMode(){}
+
+    public void setPower(){}
 
     @Override
     public void setDirection(Direction direction) {
