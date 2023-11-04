@@ -40,7 +40,7 @@ public class Hardware {
 
     //Webcam
     public OpenCvWebcam webcam = null;
-    public CVPipelineSignal webcamPipeline = null;
+    public CVPipelineAutoDetection webcamPipeline = null;
 
     //Control Classes
     public SampleMecanumDrive drive = null;
@@ -201,7 +201,7 @@ public class Hardware {
         drive = new SampleMecanumDrive(hwMap); //Roadrunner drivetrain
 
         //Camera
-        webcamPipeline = new CVPipelineSignal(opMode.telemetry);
+        webcamPipeline = new CVPipelineAutoDetection(opMode.telemetry);
         int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         webcam.setPipeline(webcamPipeline);
@@ -345,11 +345,6 @@ public class Hardware {
                 + "motorRBack power,"
                 + "motorRBack velocity,"
 
-                + "yellow percentage,"
-                + "purple percentage,"
-                + "green percentage,"
-                + "cone position,"
-
 
 //                + "frontDistance,"
 //                + "rearDistance,"
@@ -441,11 +436,6 @@ public class Hardware {
                     motorRBack.getCurrentPosition(),
                     motorRBack.getPower(),
                     motorRBack.getVelocity(),
-
-                    webcamPipeline.yellowPercent,
-                    webcamPipeline.purplePercent,
-                    webcamPipeline.greenPercent,
-                    webcamPipeline.conePosition,
 
 
 //                    frontDistance.getDistance(DistanceUnit.INCH),

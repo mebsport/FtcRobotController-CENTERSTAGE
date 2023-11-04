@@ -14,10 +14,10 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 @TeleOp
 public class VisionTest extends LinearOpMode {
-    @Override
 
     WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
-    CameraStreamSource camera = CameraStreamSource
+    private org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource CameraStreamSource;
+    CameraStreamSource camera = CameraStreamSource;
 
     public void runOpMode() throws InterruptedException {
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
@@ -30,20 +30,20 @@ public class VisionTest extends LinearOpMode {
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .setCameraResolution(new Size(640,480))
+                .setCameraResolution(new Size(640, 480))
                 .build();
 
         waitForStart();
 
-        while (!isStopRequested() && opModeIsActive()){
-            if(tagProcessor.getDetections().size()>0){
+        while (!isStopRequested() && opModeIsActive()) {
+            if (tagProcessor.getDetections().size() > 0) {
                 AprilTagDetection tag = tagProcessor.getDetections().get(0);
 
                 telemetry.addData("x", tag.ftcPose.x);
-                telemetry.addData("y",tag.ftcPose.y);
-                telemetry.addData("z",tag.ftcPose.z);
-                telemetry.addData("roll",tag.ftcPose.roll);
-                telemetry.addData("pitch",tag.ftcPose.pitch);
+                telemetry.addData("y", tag.ftcPose.y);
+                telemetry.addData("z", tag.ftcPose.z);
+                telemetry.addData("roll", tag.ftcPose.roll);
+                telemetry.addData("pitch", tag.ftcPose.pitch);
                 telemetry.addData("yaw", tag.ftcPose.yaw);
             }
 
