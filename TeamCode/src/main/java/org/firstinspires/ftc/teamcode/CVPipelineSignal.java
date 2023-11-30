@@ -43,7 +43,7 @@ public class CVPipelineSignal extends OpenCvPipeline {
     }
 
 
-    public boolean isFrameSelected(){
+    public boolean isFrameSelected() {
         return conePosition != 0;
     }
 
@@ -53,9 +53,9 @@ public class CVPipelineSignal extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        frame ++;
+        frame++;
 
-        if(frame %40 == 0){
+        if (frame % 40 == 0) {
             System.gc();
         }
 
@@ -83,7 +83,7 @@ public class CVPipelineSignal extends OpenCvPipeline {
         Scalar greenHighHSV = new Scalar(91, 255, 255);
         Core.inRange(mat, greenLowHSV, greenHighHSV, greenIMG);
 
-        //Yellow
+        //Yellow 
         Scalar yellowLowHSV = new Scalar(92, 50, 50);
         Scalar yellowHighHSV = new Scalar(108, 255, 255);
         Core.inRange(mat, yellowLowHSV, yellowHighHSV, yellowIMG);
@@ -110,7 +110,7 @@ public class CVPipelineSignal extends OpenCvPipeline {
             telemetry.addLine("Green Image Selected");
             highImg = greenIMG;
             conePosition = 1;
-        }else if ((0.07 > purplePercent) && (purplePercent > 0.02)) {
+        } else if ((0.07 > purplePercent) && (purplePercent > 0.02)) {
             telemetry.addLine("Purple Image Selected");
             highImg = purpleIMG;
             conePosition = 3;
@@ -118,8 +118,7 @@ public class CVPipelineSignal extends OpenCvPipeline {
             telemetry.addLine("Yellow Image Selected");
             highImg = yellowIMG;
             conePosition = 2;
-        }
-        else {
+        } else {
             telemetry.addLine("No Image Selected");
             highImg = croppedIMG;
             conePosition = 0;
