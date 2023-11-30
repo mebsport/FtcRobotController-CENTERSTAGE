@@ -15,6 +15,8 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
 
     private final boolean isRed = false;
     Mat mat = new Mat();
+    Mat blueIMG = new Mat();
+    Mat redIMG = new Mat();
     Mat leftPos = new Mat();
     Mat centerPos = new Mat();
     Mat rightPos = new Mat();
@@ -49,6 +51,8 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         }
 
         mat.release();
+        blueIMG.release();
+        redIMG.release();
         leftPos.release();
         centerPos.release();
         rightPos.release();
@@ -56,15 +60,13 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGRA2BGR);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
 
-        if (isRed) {
-            Scalar redLowHSV = new Scalar(0, 0, 0);
-            Scalar redHighHSV = new Scalar(0, 0, 0);
-            Core.inRange(mat, redLowHSV, redHighHSV, mat);
-        } else {
-            Scalar blueLowHSV = new Scalar(0, 0, 0);
-            Scalar blueHighHSV = new Scalar(0, 0, 0);
-            Core.inRange(mat, blueLowHSV, blueHighHSV, mat);
-        }
+        Scalar redLowHSV = new Scalar(0, 0, 0);
+        Scalar redHighHSV = new Scalar(0, 0, 0);
+        Core.inRange(mat, redLowHSV, redHighHSV, redIMG);
+        Scalar blueLowHSV = new Scalar(0, 0, 0);
+        Scalar blueHighHSV = new Scalar(0, 0, 0);
+        Core.inRange(mat, blueLowHSV, blueHighHSV, blueIMG);
+
 
         leftPos = mat.submat(0, 0, 0, 0);
         rightPos = mat.submat(0, 0, 0, 0);
