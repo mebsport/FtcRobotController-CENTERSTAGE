@@ -13,7 +13,7 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     private final Telemetry telemetry;
     String path = Environment.getExternalStorageDirectory().getPath() + "/FIRST/IMAGES/";
 
-    private final boolean isRed = false;
+    public boolean isRed = false;
     Mat mat = new Mat();
     Mat blueIMG = new Mat();
     Mat redIMG = new Mat();
@@ -21,6 +21,8 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     Mat centerPos = new Mat();
     Mat rightPos = new Mat();
 
+    int redCount = -999;
+    int blueCount = -999;
     int leftCount = -999;
     int centerCount = -999;
     int rightCount = -999;
@@ -46,6 +48,7 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
         frame++;
 
+        // Clean up system memory
         if (frame % 40 == 0) {
             System.gc();
         }
@@ -57,17 +60,33 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         centerPos.release();
         rightPos.release();
 
+        // Convert the image into HSV
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGRA2BGR);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
 
-        Scalar redLowHSV = new Scalar(0, 0, 0);
-        Scalar redHighHSV = new Scalar(0, 0, 0);
+        //Make a mask of the image using the high and low values for red and blue
+        //RED
+        Scalar redLowHSV = new Scalar(-5, 50, 50);
+        Scalar redHighHSV = new Scalar(15, 255, 255);
         Core.inRange(mat, redLowHSV, redHighHSV, redIMG);
-        Scalar blueLowHSV = new Scalar(0, 0, 0);
-        Scalar blueHighHSV = new Scalar(0, 0, 0);
+        //BLUE
+        Scalar blueLowHSV = new Scalar(105, 50, 50);
+        Scalar blueHighHSV = new Scalar(125, 255, 255);
         Core.inRange(mat, blueLowHSV, blueHighHSV, blueIMG);
 
+        //Select an image to use based off the values in the red and blue images
+        redCount = Core.countNonZero(redIMG);
+        blueCount = Core.countNonZero(blueIMG);
 
+        if (redCount > blueCount) {
+            isRed = true;
+            mat = redIMG;
+        } else {
+            isRed = false;
+            mat = blueIMG;
+        }
+
+        // Crop the images based off of the three locaitons
         leftPos = mat.submat(0, 0, 0, 0);
         rightPos = mat.submat(0, 0, 0, 0);
         centerPos = mat.submat(0, 0, 0, 0);
@@ -79,6 +98,9 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         telemetry.addData("Left Count: ", leftCount);
         telemetry.addData("Right Count: ", rightCount);
         telemetry.addData("Center Count: ", centerCount);
+        telemetry.addData("Blue Count: ", blueCount);
+        telemetry.addData("Red Count: ", redCount);
+
 
         if (leftCount > centerCount && leftCount > rightCount) {
             spikeMark = 1;
@@ -87,7 +109,6 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         } else {
             spikeMark = 3;
         }
-
 
         return mat;
     }
