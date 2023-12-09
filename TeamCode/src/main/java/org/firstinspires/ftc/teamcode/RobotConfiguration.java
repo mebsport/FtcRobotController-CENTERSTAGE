@@ -9,48 +9,49 @@ import java.io.IOException;
 public class RobotConfiguration {
     public boolean isRed = false;
     public boolean isLeftStartPos = false;
-    public boolean stackExtraCones = false;
+    public boolean placeExtraPixels = false;
 
-    public RobotConfiguration(){}
-    public RobotConfiguration(boolean isRed, boolean isLeftStartPos, boolean stackExtraCones){
-        this.isRed = isRed;
-        this.isLeftStartPos = isLeftStartPos;
-        this.stackExtraCones = stackExtraCones;
+    public RobotConfiguration() {
     }
 
-    public void saveConfig(){
+    public RobotConfiguration(boolean isRed, boolean isLeftStartPos, boolean placeExtraPixels) {
+        this.isRed = isRed;
+        this.isLeftStartPos = isLeftStartPos;
+        this.placeExtraPixels = placeExtraPixels;
+    }
+
+    public void saveConfig() {
         FileWriter configFile = null;
-        try{
+        try {
             configFile = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/FIRST/RoboConfig2223.txt", false);
 
-            if(isRed){
+            if (isRed) {
                 configFile.write('R');
-            }else{
+            } else {
                 configFile.write('B');
             }
 
-            if(isLeftStartPos){
+            if (isLeftStartPos) {
                 configFile.write('L');
-            }else{
+            } else {
                 configFile.write('R');
             }
 
-            if(stackExtraCones){
+            if (placeExtraPixels) {
                 configFile.write('Y');
-            }else{
+            } else {
                 configFile.write('N');
             }
 
             configFile.close();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void readConfig(){
+    public void readConfig() {
         FileReader configFile = null;
-        try{
+        try {
             configFile = new FileReader(Environment.getExternalStorageDirectory().getPath() + "/FIRST/RoboConfig2223.txt");
             char tempValue = ' ';
 
@@ -64,11 +65,10 @@ public class RobotConfiguration {
 
             //Read Auto Setting
             tempValue = (char) configFile.read();
-            stackExtraCones = tempValue == 'Y';
+            placeExtraPixels = tempValue == 'Y';
 
             configFile.close();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
