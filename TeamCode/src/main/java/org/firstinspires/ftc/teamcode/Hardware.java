@@ -6,6 +6,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -41,6 +42,7 @@ public class Hardware {
     //Webcam
     public OpenCvWebcam webcam = null;
     public CVPipelineAutoDetection webcamPipeline = null;
+    public CVPipelineAprilTagDetection aprilTagPipeline = null;
 
     //Control Classes
     public SampleMecanumDrive drive = null;
@@ -60,6 +62,7 @@ public class Hardware {
 
     //Intake
     public DcMotorEx intakeMotor = null;
+    public Intake intake = null;
 
     //Pixel Cabin
     public Servo cabinRotationServo = null;
@@ -202,6 +205,12 @@ public class Hardware {
 
         //Camera
         webcamPipeline = new CVPipelineAutoDetection(opMode.telemetry);
+        double fx = 578.272;
+        double fy = 578.272;
+        double cx = 402.145;
+        double cy = 221.506;
+        double tagsize = 0.166;
+        aprilTagPipeline = new CVPipelineAprilTagDetection(tagsize, fx, fy, cx, cy);
         int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         webcam.setPipeline(webcamPipeline);
@@ -229,7 +238,12 @@ public class Hardware {
         liftHomeButton = null;
 
         //Intake
-        intakeMotor = null;
+        intakeMotor = hwMap.get(DcMotorEx.class, "motorIntake");
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setMotorEnable();
+        intake = new Intake(opMode, this);
+        intake.init();
 
         //Pixel Cabin
         cabinRotationServo = null;
@@ -242,7 +256,7 @@ public class Hardware {
 
 
         // drive train HW
-        imu = hwMap.get(Gyroscope.class, "imu");
+//        imu = hwMap.get(Gyroscope.class, "imu");
         motorLFront = new DummyMotor();
         motorLBack = new DummyMotor();
         motorRFront = new DummyMotor();
