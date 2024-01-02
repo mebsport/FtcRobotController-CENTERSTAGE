@@ -11,7 +11,7 @@ public class Intake {
     private DcMotorEx intakeMotor = null;
     private boolean isRunning = false;
     private boolean previousIsRunning = false;
-    public static final int INTAKE_POWER = -999; // NEED TO BE SET
+    public static final int INTAKE_POWER = 1; // NEED TO BE SET
 
 
     public Intake(OpMode opMode, Hardware hardware) {
@@ -32,7 +32,7 @@ public class Intake {
     }
 
     public void startMotor() {
-        intakeMotor.setPower(INTAKE_POWER);
+        intakeMotor.setPower(1);
         previousIsRunning = true;
     }
 
@@ -41,11 +41,11 @@ public class Intake {
         previousIsRunning = false;
     }
 
-    public void intakeStart() {
+    private void intakeStart() {
         isRunning = true;
     }
 
-    public void intakeStop() {
+    private void intakeStop() {
         isRunning = false;
     }
 }
