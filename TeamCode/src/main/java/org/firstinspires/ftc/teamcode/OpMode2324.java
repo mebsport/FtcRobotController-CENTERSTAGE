@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @Config
-@TeleOp(name="OpMode 2324", group="A")
+@TeleOp(name = "OpMode 2324", group = "A")
 public class OpMode2324 extends OpMode {
     private final Hardware hardware = new Hardware();
 
@@ -74,13 +74,20 @@ public class OpMode2324 extends OpMode {
 
         //Roadrunner Drive Controls
         hardware.drive.setWeightedDrivePower(new Pose2d(
-                -hardware.gamepad1_current_left_stick_y*currentGasPedal,
-                -hardware.gamepad1_current_left_stick_x*currentGasPedal,
-                -hardware.gamepad1_current_right_stick_x*currentGasPedal
+                -hardware.gamepad1_current_left_stick_y * currentGasPedal,
+                -hardware.gamepad1_current_left_stick_x * currentGasPedal,
+                -hardware.gamepad1_current_right_stick_x * currentGasPedal
         ));
 
+        //Intake
+        if (hardware.gamepad2_current_dpad_up && !hardware.gamepad2_previous_dpad_up) {
+            hardware.intake.startMotor();
+        } else if (hardware.gamepad2_current_dpad_down && !hardware.gamepad2_previous_dpad_down) {
+            hardware.intake.stopMotor();
+        }
+
         //Commands
-        if(hardware.gamepad1_current_x && !hardware.gamepad1_previous_x){
+        if (hardware.gamepad1_current_x && !hardware.gamepad1_previous_x) {
             hardware.robo130.cancelFutureCommands(); //XXX LOOK AT THIS LATER, THIS WILL PROBABLY BREAK THE ROBOT IN THE FUTURE LOL
         }
 
