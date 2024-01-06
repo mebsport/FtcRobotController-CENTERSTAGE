@@ -59,6 +59,7 @@ public class Hardware {
     //Lift
     public DcMotorEx liftMotor = null;
     public TouchSensor liftHomeButton = null;
+    public Lift lift = null;
 
     //Intake
     public DcMotorEx intakeMotor = null;
@@ -236,6 +237,7 @@ public class Hardware {
         //Lift
         liftMotor = null;
         liftHomeButton = null;
+        lift = new Lift(opMode, this);
 
         //Intake
         intakeMotor = hwMap.get(DcMotorEx.class, "motorIntake");
