@@ -23,6 +23,10 @@ public class OpMode2324 extends OpMode {
     private final boolean isPreviousManualDrive = false;
     private final boolean isCurrentManualDrive = false;
 
+    private int liftTargetPosition = 0;
+    private boolean liftManualMode = false;
+    private int liftPreviousManualPosition = Lift.LIFT_MINPOS;
+
     @Override
     public void init() {
         System.gc();
@@ -33,6 +37,9 @@ public class OpMode2324 extends OpMode {
         robotConfiguration.readConfig();
         isRed = robotConfiguration.isRed;
         isLeftStartingPos = robotConfiguration.isLeftStartPos;
+
+        hardware.lift.calibrateLift();
+        hardware.roboLift.calibrateLift();
 
         telemetry.addLine("Configuration Fetched");
         telemetry.addData("Is Red?? ", isRed);
@@ -72,6 +79,7 @@ public class OpMode2324 extends OpMode {
 
         hardware.updateValues();
 
+        //GAMEPAD_1
         //Roadrunner Drive Controls
         hardware.drive.setWeightedDrivePower(new Pose2d(
                 -hardware.gamepad1_current_left_stick_y * currentGasPedal,
@@ -79,14 +87,46 @@ public class OpMode2324 extends OpMode {
                 -hardware.gamepad1_current_right_stick_x * currentGasPedal
         ));
 
-        //Intake
-        if (hardware.gamepad2_current_dpad_up && !hardware.gamepad2_previous_dpad_up) {
-            hardware.intake.startMotor();
-        } else if (hardware.gamepad2_current_dpad_down && !hardware.gamepad2_previous_dpad_down) {
-            hardware.intake.stopMotor();
+        //Hang System
+        if (hardware.gamepad1_current_dpad_up && !hardware.gamepad1_previous_dpad_up) {
+            hardware.roboLift.goMax();
+        } else if (hardware.gamepad1_current_dpad_down && !hardware.gamepad1_previous_dpad_down) {
+            hardware.roboLift.goHang();
         }
 
-        //Commands
+        //GAMEPAD_2
+        //Lift Controls
+        //Manual Controls
+        if (!liftManualMode && Math.abs(hardware.gamepad2_current_right_stick_y) > 0.03) {
+            liftManualMode = true;
+            liftPreviousManualPosition = hardware.lift.getCurrentPos();
+            liftTargetPosition = liftPreviousManualPosition + (int) (hardware.gamepad2_current_right_stick_y * Lift.LIFT_MANUAL_SPEED * hardware.getDeltaTime());
+            liftPreviousManualPosition = liftTargetPosition;
+            hardware.lift.setPosition(liftTargetPosition);
+        } else if (liftManualMode && Math.abs(hardware.gamepad2_current_right_stick_y) > 0.03) {
+            liftTargetPosition = liftPreviousManualPosition + (int) (hardware.gamepad2_current_right_stick_y * Lift.LIFT_MANUAL_SPEED * hardware.getDeltaTime());
+            liftPreviousManualPosition = liftTargetPosition;
+            hardware.lift.setPosition(liftTargetPosition);
+        } else if (liftManualMode && Math.abs(hardware.gamepad2_current_right_stick_y) < 0.03) {
+            liftPreviousManualPosition = hardware.lift.getCurrentPos();
+            liftTargetPosition = liftPreviousManualPosition;
+            hardware.lift.setPosition(liftTargetPosition);
+            liftManualMode = false;
+        }
+        //Programmed Positions
+
+        //Intake
+        if (hardware.gamepad2_current_left_bumper && !hardware.gamepad2_previous_left_bumper) {
+            hardware.intake.stopMotor();
+        } else if (hardware.gamepad2_current_right_bumper && !hardware.gamepad2_previous_right_bumper) {
+            hardware.intake.startMotor();
+        }
+
+        //Cabin
+        //Tilt
+        //Door
+
+        //COMMANDS
         if (hardware.gamepad1_current_x && !hardware.gamepad1_previous_x) {
             hardware.robo130.cancelFutureCommands(); //XXX LOOK AT THIS LATER, THIS WILL PROBABLY BREAK THE ROBOT IN THE FUTURE LOL
         }
