@@ -18,22 +18,22 @@ public class Lift {
 
     private final ElapsedTime runtime = new ElapsedTime();
     private final ElapsedTime timeout = new ElapsedTime();
-    public static final int LIFT_MAXPOS = -999; // NEED TO BE SET
-    public static final int LIFT_MINPOS = -999; // NEED TO BE SET
+    public static final int LIFT_MAXPOS = 2300; // NEED TO BE SET
+    public static final int LIFT_MINPOS = 10; // NEED TO BE SET
     public static final int LIFT_MAX_SPEED = -999; // NEED TO BE SET
     public static final int LIFT_MANUAL_SPEED = (int) (LIFT_MAX_SPEED * .90);
     public static final int PIXEL_MOVE_SIZE = -999; // NEED TO BE SET
 
     private double startTime = 0;
     private final double liftPower = 1.0;
-    private final double liftHomingPower =- 0.5;
+    private final double liftHomingPower = -0.2;
     private int previousTargetPos = 0;
 
     private static final int LIFTNOTHOMED = 0;
     private static final int LIFTFINDINGHOME = 1;
     private static final int LIFTBACKOFFHOME = 2;
     private static final int LIFTREADY = 3;
-    private              int state = LIFTNOTHOMED;
+    private int state = LIFTNOTHOMED;
     List<String> states = Arrays.asList("LIFTNOTHOMED", "LIFTFINDINGHOME", "LIFTBACKOFFHOME", "LIFTREADY");
     private static final double MAX_TIMEOUT = 5.0;
 
@@ -56,66 +56,65 @@ public class Lift {
         opMode.telemetry.update();
     }
 
-    public void doInitLoop() {
+    public void doInitLoop() throws InterruptedException {
         opMode.telemetry.addData("Lift Status", "Starting. Finding home...");
         opMode.telemetry.update();
-        switch(state)
-        {
+        switch (state) {
             case LIFTNOTHOMED:
                 break;
 
             case LIFTBACKOFFHOME:
-                if(opMode.time - startTime >= 0.2){
+                if (opMode.time - startTime >= 0.2) {
                     findHome();
                 }
                 break;
 
             case LIFTFINDINGHOME:
-                if(!liftSensor.isPressed()){
-                    if(opMode.time - startTime >= MAX_TIMEOUT){
+                if (!liftSensor.isPressed()) {
+                    if (opMode.time - startTime >= MAX_TIMEOUT) {
                         liftMotor.setPower(0);
                         opMode.telemetry.addLine("Lift could not find home position");
                         hardware.logMessage(true, "Lift", "COULD NOT LOCATE HOME POSITION");
                     }
                     break;
-                }
-                else{
+                } else {
                     liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                    wait(5);
                     setPosition(0, liftPower);
-                    hardware.logMessage(false, "Lift","Lift State:  Ready");
+                    hardware.logMessage(false, "Lift", "Lift State:  Ready");
                     state = LIFTREADY;
                 }
                 break;
         }
         opMode.telemetry.addData("Lift State", states.get(state));
     }
+
     public void doLoop() {
         opMode.telemetry.addData("Lift Status", "Starting. Finding home...");
         opMode.telemetry.update();
-        switch(state)
-        {
+        switch (state) {
             case LIFTNOTHOMED:
                 break;
 
             case LIFTBACKOFFHOME:
-                if(opMode.time - startTime >= 0.2){
+                if (opMode.time - startTime >= 0.2) {
                     findHome();
                 }
                 break;
 
             case LIFTFINDINGHOME:
-                if(!liftSensor.isPressed()){
-                    if(opMode.time - startTime >= MAX_TIMEOUT){
+                hardware.logMessage(false, "Lift", "lift is in finding home state");
+                if (!liftSensor.isPressed()) {
+                    if (opMode.time - startTime >= MAX_TIMEOUT) {
                         liftMotor.setPower(0);
                         opMode.telemetry.addLine("Lift could not find home position");
                         hardware.logMessage(true, "Lift", "COULD NOT LOCATE HOME POSITION");
                     }
                     break;
-                }
-                else{
+                } else {
                     liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     setPosition(0, liftPower);
-                    hardware.logMessage(false, "Lift","Lift State:  Ready");
+                    hardware.logMessage(false, "Lift", "Lift State:  Ready");
                     state = LIFTREADY;
                 }
                 break;
@@ -124,19 +123,20 @@ public class Lift {
     }
 
     //Getters for power and position
-    public double getCurrentPow(){
+    public double getCurrentPow() {
         return liftMotor.getPower();
     }
-    public int getCurrentPos(){
+
+    public int getCurrentPos() {
         return liftMotor.getCurrentPosition();
     }
 
     //Lift Movement
-    public void setPosition(int targetPos){
+    public void setPosition(int targetPos) {
         this.setPosition(targetPos, liftPower);
     }
 
-    public void setPosition(int targetPos, double targetPow){
+    public void setPosition(int targetPos, double targetPow) {
         int tp = Math.max(Math.min(targetPos, LIFT_MAXPOS), LIFT_MINPOS);
         liftMotor.setTargetPosition(tp);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -145,42 +145,52 @@ public class Lift {
     }
 
     //Increase/Decrease Position By 1 Pixel
-    public void increaseSinglePixel(){setPosition(getCurrentPos()+PIXEL_MOVE_SIZE);}
+    public void increaseSinglePixel() {
+        setPosition(getCurrentPos() + PIXEL_MOVE_SIZE);
+    }
 
-    public void decreaseSinglePixel(){setPosition(getCurrentPos()-PIXEL_MOVE_SIZE);}
+    public void decreaseSinglePixel() {
+        setPosition(getCurrentPos() - PIXEL_MOVE_SIZE);
+    }
 
     //GOTO MIN & MAX Positions
-    public void goMin() {setPosition(LIFT_MINPOS);}
-    public void goMax() {setPosition(LIFT_MAXPOS);}
+    public void goMin() {
+        setPosition(LIFT_MINPOS);
+    }
 
-    public void calibrateLift(){
+    public void goMax() {
+        setPosition(LIFT_MAXPOS);
+    }
+
+    public void calibrateLift() {
         hardware.logMessage(false, "Lift", "Starting to calibrate Lift");
         state = LIFTNOTHOMED;
-        if(liftSensor.isPressed()){
+        if (liftSensor.isPressed()) {
             backOffHome();
-        }else{
+        } else {
             findHome();
         }
     }
 
-    public void findHome(){
+    public void findHome() {
         startTime = opMode.time;
         hardware.liftMotor.setMotorEnable();
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setPower(liftHomingPower);
-        hardware.logMessage(false, "Lift","Lift State: Finding Home");
+        hardware.logMessage(false, "Lift", "Lift State: Finding Home");
         state = LIFTFINDINGHOME;
     }
-    public void backOffHome(){
+
+    public void backOffHome() {
         startTime = opMode.time;
         hardware.liftMotor.setMotorEnable();
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        liftMotor.setPower(liftPower*0.5);
-        hardware.logMessage(false, "Lift","Lift State: Backing Off Home");
+        liftMotor.setPower(liftPower * 0.2);
+        hardware.logMessage(false, "Lift", "Lift State: Backing Off Home");
         state = LIFTBACKOFFHOME;
     }
 
-    public void stop(){
+    public void stop() {
         liftMotor.setPower(0.0);
         liftMotor.setVelocity(0.0);
         liftMotor.setMotorDisable();
