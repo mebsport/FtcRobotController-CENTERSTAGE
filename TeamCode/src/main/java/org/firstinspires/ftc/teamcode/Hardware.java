@@ -69,7 +69,11 @@ public class Hardware {
     public Servo cabinRotationServo = null;
     public Servo cabinHoldServo = null;
 
-    //Hanging System
+    //Hanging System (RoboLift)
+    public DcMotorEx hangMotor = null;
+    public Servo hangLatch = null;
+    public TouchSensor hangStop = null;
+    RoboLift roboLift = null;
 
     //Drone Launcher
     public DcMotorEx droneLaunchMotor = null;
@@ -235,9 +239,11 @@ public class Hardware {
 //        rearDistance = hwMap.get(Rev2mDistanceSensor.class, "rearDistance");
 
         //Lift
-        liftMotor = null;
-        liftHomeButton = null;
+        liftMotor = hwMap.get(DcMotorEx.class, "motorLift");
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftHomeButton = hwMap.get(TouchSensor.class, "liftHome");
         lift = new Lift(opMode, this);
+        lift.init();
 
         //Intake
         intakeMotor = hwMap.get(DcMotorEx.class, "motorIntake");
@@ -251,7 +257,11 @@ public class Hardware {
         cabinRotationServo = null;
         cabinHoldServo = null;
 
-        //Hanging System
+        //Hanging System (RoboLift)
+        hangMotor = hwMap.get(DcMotorEx.class, "motorHang");
+        hangStop = hwMap.get(TouchSensor.class, "hangHome");
+        roboLift = new RoboLift(opMode, this);
+        roboLift.init();
 
         //Drone Launcher
         droneLaunchMotor = null;
@@ -329,6 +339,8 @@ public class Hardware {
         drive.update();
 //        robo130.doLoop();
         updatePreviousValues();
+        lift.doLoop();
+        roboLift.doLoop();
     }
 
     public void stop() {
