@@ -13,8 +13,6 @@ public class RobotCalibration extends OpMode {
     public void init() {
         System.gc();
         hardware.init(hardwareMap, this);
-        hardware.lift.calibrateLift();
-        hardware.roboLift.calibrateLift();
     }
 
     @Override
@@ -26,7 +24,21 @@ public class RobotCalibration extends OpMode {
 
     @Override
     public void loop() {
+        hardware.updateValues();
+        if ((hardware.gamepad1_current_a && !hardware.gamepad1_previous_a) || (hardware.gamepad2_current_a && !hardware.gamepad2_previous_a)) {
+            hardware.lift.calibrateLift();
+            hardware.roboLift.calibrateLift();
+        }
+
+        if ((hardware.gamepad1_current_dpad_left && !hardware.gamepad1_previous_dpad_left) || (hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left)) {
+            hardware.lift.calibrateLift();
+        }
+
+        if ((hardware.gamepad1_current_dpad_right && !hardware.gamepad1_previous_dpad_right) || (hardware.gamepad2_current_dpad_right && !hardware.gamepad2_previous_dpad_right)) {
+            hardware.roboLift.calibrateLift();
+        }
         hardware.loop();
+
     }
 
     @Override
