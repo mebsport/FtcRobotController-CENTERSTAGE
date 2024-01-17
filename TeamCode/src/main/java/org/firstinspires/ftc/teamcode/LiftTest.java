@@ -94,6 +94,15 @@ public class LiftTest extends OpMode {
             hardware.lift.setPosition(liftTargetPosition);
         }
 
+        if (hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
+            hardware.liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.liftMotor.setPower(.3);
+        }
+        if (hardware.gamepad1_current_right_bumper && !hardware.gamepad1_previous_right_bumper) {
+            hardware.liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            hardware.liftMotor.setPower(-.3);
+        }
+
         hardware.loop();
 
         telemetry.addData("Home Presssed?", hardware.liftHomeButton.isPressed());
