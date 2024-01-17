@@ -37,10 +37,6 @@ public class OpMode2324 extends OpMode {
         robotConfiguration.readConfig();
         isRed = robotConfiguration.isRed;
         isLeftStartingPos = robotConfiguration.isLeftStartPos;
-
-        hardware.lift.calibrateLift();
-        hardware.roboLift.calibrateLift();
-
         telemetry.addLine("Configuration Fetched");
         telemetry.addData("Is Red?? ", isRed);
         telemetry.addData("Is Left Position? ", isLeftStartingPos);
