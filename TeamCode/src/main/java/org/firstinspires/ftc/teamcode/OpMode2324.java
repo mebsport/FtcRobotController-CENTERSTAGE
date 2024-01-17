@@ -78,7 +78,7 @@ public class OpMode2324 extends OpMode {
         //GAMEPAD_1
         //Roadrunner Drive Controls
         hardware.drive.setWeightedDrivePower(new Pose2d(
-                -hardware.gamepad1_current_left_stick_y * currentGasPedal,
+                hardware.gamepad1_current_left_stick_y * currentGasPedal,
                 -hardware.gamepad1_current_left_stick_x * currentGasPedal,
                 -hardware.gamepad1_current_right_stick_x * currentGasPedal
         ));
