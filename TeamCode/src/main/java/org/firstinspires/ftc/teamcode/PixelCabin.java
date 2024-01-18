@@ -10,11 +10,11 @@ public class PixelCabin {
     private Servo cabinRotationServo = null;
     private Servo cabinHoldServo = null;
 
-    public static final int OPEN_POS = -999; // NEED TO BE SET
-    public static final int CLOSE_POS = -999; // NEED TO BE SET
-    public static final int INTAKE_POS = -999; // NEED TO BE SET
-    public static final int RELEASE_POS = -999; // NEED TO BE SET
-    public static final int STOW_POS = -999; // NEED TO BE SET
+    public static final double OPEN_POS = -999; // NEED TO BE SET
+    public static final double CLOSE_POS = -999; // NEED TO BE SET
+    public static final double INTAKE_POS = -999; // NEED TO BE SET
+    public static final double RELEASE_POS = -999; // NEED TO BE SET
+    public static final double STOW_POS = -999; // NEED TO BE SET
 
 
     public PixelCabin(OpMode opMode, Hardware hardware) {
@@ -45,5 +45,13 @@ public class PixelCabin {
 
     public void goToStowPosition() {
         cabinRotationServo.setPosition(STOW_POS);
+    }
+
+    public void setDoorPosition(double position) {
+        cabinHoldServo.setPosition(Math.min(Math.max((position), 0.0), 1.0));
+    }
+
+    public void setRotatePosition(double position) {
+        cabinRotationServo.setPosition(Math.min(Math.max((position), 0.0), 1.0));
     }
 }
