@@ -91,7 +91,7 @@ public class RoboLift {
 
     public void doLoop() {
         opMode.telemetry.addData("Robo Hang Status", "Starting. Finding home...");
-        opMode.telemetry.update();
+//        opMode.telemetry.update();
         switch (state) {
             case LIFTNOTHOMED:
                 break;

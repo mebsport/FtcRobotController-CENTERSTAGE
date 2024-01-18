@@ -91,7 +91,7 @@ public class Lift {
 
     public void doLoop() {
         opMode.telemetry.addData("Lift Status", "Starting. Finding home...");
-        opMode.telemetry.update();
+//        opMode.telemetry.update();
         switch (state) {
             case LIFTNOTHOMED:
                 break;
