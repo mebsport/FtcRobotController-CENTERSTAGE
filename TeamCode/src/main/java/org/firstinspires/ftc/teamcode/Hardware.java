@@ -68,6 +68,7 @@ public class Hardware {
     //Pixel Cabin
     public Servo cabinRotationServo = null;
     public Servo cabinHoldServo = null;
+    public PixelCabin pixelCabin = null;
 
     //Hanging System (RoboLift)
     public DcMotorEx hangMotor = null;
@@ -254,8 +255,10 @@ public class Hardware {
         intake.init();
 
         //Pixel Cabin
-        cabinRotationServo = null;
-        cabinHoldServo = null;
+        cabinRotationServo = hwMap.get(Servo.class, "cabinRotateServo");
+        cabinHoldServo = hwMap.get(Servo.class, "cabinHoldServo");
+        pixelCabin = new PixelCabin(opMode, this);
+        pixelCabin.init();
 
         //Hanging System (RoboLift)
         hangMotor = hwMap.get(DcMotorEx.class, "motorHang");
@@ -668,7 +671,7 @@ public class Hardware {
     }
 
     public void logMessage(boolean isError, String moduleName, String message) {
-        String output = "" + String.format("%8.4f", opMode.time) + " ";
+        String output = String.format("%8.4f", opMode.time) + " ";
         if (isError) {
             output += "ERROR: ";
         }
