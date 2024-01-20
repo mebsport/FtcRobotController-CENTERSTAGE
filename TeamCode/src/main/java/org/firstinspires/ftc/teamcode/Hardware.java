@@ -60,6 +60,7 @@ public class Hardware {
     public DcMotorEx liftMotor = null;
     public TouchSensor liftHomeButton = null;
     public Lift lift = null;
+    public boolean liftManualMode = false;
 
     //Intake
     public DcMotorEx intakeMotor = null;

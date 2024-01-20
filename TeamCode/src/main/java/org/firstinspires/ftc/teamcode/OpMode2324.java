@@ -109,7 +109,14 @@ public class OpMode2324 extends OpMode {
             hardware.lift.setPosition(liftTargetPosition);
             liftManualMode = false;
         }
+
         //Programmed Positions
+        if (hardware.gamepad2_current_dpad_down && !hardware.gamepad2_previous_dpad_down) {
+            liftManualMode = false;
+            hardware.lift.goMin();
+        }
+
+        hardware.liftManualMode = liftManualMode;
 
         //Intake
         if (hardware.gamepad2_current_left_bumper && !hardware.gamepad2_previous_left_bumper) {
@@ -119,8 +126,12 @@ public class OpMode2324 extends OpMode {
         }
 
         //Cabin
-        //Tilt
-        //Door
+        if (hardware.gamepad2_current_a && !hardware.gamepad2_previous_a) {
+            hardware.pixelCabin.openCloseDoor();
+        }
+        if (hardware.gamepad2_current_b && !hardware.gamepad2_previous_b) {
+            hardware.pixelCabin.goToReleasePosition();
+        }
 
         //COMMANDS
         if (hardware.gamepad1_current_x && !hardware.gamepad1_previous_x) {

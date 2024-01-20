@@ -16,6 +16,8 @@ public class LiftTest extends OpMode {
     public void init() {
 
         hardware.init(hardwareMap, this);
+        hardware.pixelCabin.goToStowPosition();
+        hardware.pixelCabin.holdPixel();
     }
 
     @Override

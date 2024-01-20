@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.opencv.core.Mat;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,7 +23,8 @@ public class Lift {
     public static final int LIFT_MAXPOS = 2300; // NEED TO BE SET
     public static final int LIFT_MINPOS = 10; // NEED TO BE SET
     public static final int LIFT_MAX_SPEED = -999; // NEED TO BE SET
-    public static final int LIFT_MANUAL_SPEED = (int) (LIFT_MAX_SPEED * .90);
+    public static final double LIFT_MANUAL_SPEED = LIFT_MAX_SPEED * .90;
+    public static final double LIFT_DOWN_POWER = .3;
     public static final int PIXEL_MOVE_SIZE = -999; // NEED TO BE SET
 
     private double startTime = 0;
@@ -34,6 +37,9 @@ public class Lift {
     private static final int LIFTBACKOFFHOME = 2;
     private static final int LIFTREADY = 3;
     private int state = LIFTNOTHOMED;
+    private boolean isRising = false;
+    private int liftCurrentPosition = -999;
+    private final int liftSafePosition = 850;
     List<String> states = Arrays.asList("LIFTNOTHOMED", "LIFTFINDINGHOME", "LIFTBACKOFFHOME", "LIFTREADY");
     private static final double MAX_TIMEOUT = 5.0;
 
@@ -120,6 +126,23 @@ public class Lift {
                 break;
         }
         opMode.telemetry.addData("Lift State", states.get(state));
+
+        liftCurrentPosition = liftMotor.getCurrentPosition();
+//        if (isRising && (liftCurrentPosition >= liftSafePosition)) {
+//            hardware.pixelCabin.goToReleasePosition();
+//        } else if ((liftCurrentPosition >= liftSafePosition) && hardware.liftManualMode) {
+//            hardware.pixelCabin.goToReleasePosition();
+//        } else {
+//            hardware.pixelCabin.goToStowPosition();
+//            hardware.pixelCabin.holdPixel();
+//        }
+
+        if (!isRising) {
+            hardware.pixelCabin.goToStowPosition();
+            hardware.pixelCabin.holdPixel();
+        } else if (liftCurrentPosition >= liftSafePosition) {
+            hardware.pixelCabin.goToReleasePosition();
+        }
     }
 
     //Getters for power and position
@@ -138,9 +161,14 @@ public class Lift {
 
     public void setPosition(int targetPos, double targetPow) {
         int tp = Math.max(Math.min(targetPos, LIFT_MAXPOS), LIFT_MINPOS);
+        isRising = ((tp >= previousTargetPos) && 15 < (Math.abs((previousTargetPos - tp))));
         liftMotor.setTargetPosition(tp);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setPower(targetPow);
+        double tpw = targetPow;
+        if (!isRising) {
+            tpw = tpw * LIFT_DOWN_POWER;
+        }
+        liftMotor.setPower(tpw);
         previousTargetPos = tp;
     }
 
