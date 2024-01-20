@@ -161,7 +161,7 @@ public class Lift {
 
     public void setPosition(int targetPos, double targetPow) {
         int tp = Math.max(Math.min(targetPos, LIFT_MAXPOS), LIFT_MINPOS);
-        isRising = ((tp >= previousTargetPos) && 15 < (Math.abs((previousTargetPos - tp))));
+        isRising = ((tp <= previousTargetPos) && 15 < (Math.abs((previousTargetPos - tp))));
         liftMotor.setTargetPosition(tp);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         double tpw = targetPow;
