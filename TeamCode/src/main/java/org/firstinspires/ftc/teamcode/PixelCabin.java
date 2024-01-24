@@ -62,7 +62,7 @@ public class PixelCabin {
         cabinRotationServo.setPosition(Math.min(Math.max((position), 0.0), 1.0));
     }
 
-    public void openCloseDoor() {
+    public void toggleDoor() {
         if (isOpen) {
             holdPixel();
         } else {

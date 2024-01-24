@@ -127,7 +127,7 @@ public class OpMode2324 extends OpMode {
 
         //Cabin
         if (hardware.gamepad2_current_a && !hardware.gamepad2_previous_a) {
-            hardware.pixelCabin.openCloseDoor();
+            hardware.pixelCabin.toggleDoor();
         }
         if (hardware.gamepad2_current_b && !hardware.gamepad2_previous_b) {
             hardware.pixelCabin.goToReleasePosition();
