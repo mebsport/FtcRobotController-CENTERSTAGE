@@ -22,6 +22,7 @@ public class OpMode2324 extends OpMode {
 
     private final boolean isPreviousManualDrive = false;
     private final boolean isCurrentManualDrive = false;
+    private double currentGasPedalPower = 1.0;
 
     private int liftTargetPosition = 0;
     private boolean liftManualMode = false;
@@ -76,11 +77,19 @@ public class OpMode2324 extends OpMode {
         hardware.updateValues();
 
         //GAMEPAD_1
+        //Gas Pedal
+        if (hardware.gamepad1_current_left_trigger < 0.05 && hardware.gamepad1_current_right_trigger < 0.05) {
+            currentGasPedalPower = 1.0;
+        } else if (hardware.gamepad1_current_left_trigger > 0.5) {
+            currentGasPedalPower = (Math.max(1.0 - hardware.gamepad1_current_left_trigger, 0.15));
+        } else if (hardware.gamepad1_current_right_trigger > 0.5) {
+            currentGasPedalPower = (Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
+        }
         //Roadrunner Drive Controls
         hardware.drive.setWeightedDrivePower(new Pose2d(
-                hardware.gamepad1_current_left_stick_y * currentGasPedal,
-                -hardware.gamepad1_current_left_stick_x * currentGasPedal,
-                -hardware.gamepad1_current_right_stick_x * currentGasPedal
+                hardware.gamepad1_current_left_stick_y * currentGasPedalPower,
+                -hardware.gamepad1_current_left_stick_x * currentGasPedalPower,
+                -hardware.gamepad1_current_right_stick_x * currentGasPedalPower
         ));
 
         //Hang System
@@ -130,8 +139,9 @@ public class OpMode2324 extends OpMode {
             hardware.pixelCabin.toggleDoor();
         }
         if (hardware.gamepad2_current_b && !hardware.gamepad2_previous_b) {
-            hardware.pixelCabin.goToReleasePosition();
+            hardware.pixelCabin.toggleRotate();
         }
+
 
         //COMMANDS
         if (hardware.gamepad1_current_x && !hardware.gamepad1_previous_x) {
