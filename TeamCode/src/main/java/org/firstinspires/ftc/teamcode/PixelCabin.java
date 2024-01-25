@@ -12,9 +12,9 @@ public class PixelCabin {
 
     public static final double OPEN_POS = .38; // NEED TO BE SET
     public static final double CLOSE_POS = .5; // NEED TO BE SET
-    public static final double INTAKE_POS = .3; // NEED TO BE SET
+    public static final double INTAKE_POS = 263; // NEED TO BE SET
     public static final double RELEASE_POS = .581; // NEED TO BE SET
-    public static final double STOW_POS = .3; // NEED TO BE SET
+    public static final double STOW_POS = .263; // NEED TO BE SET
     private boolean isOpen = false;
     private boolean isInReleasePosition = false;
 
@@ -27,6 +27,8 @@ public class PixelCabin {
     public void init() {
         cabinRotationServo = hardware.cabinRotationServo;
         cabinHoldServo = hardware.cabinHoldServo;
+        goToStowPosition();
+        holdPixel();
     }
 
     public void releasePixel() {
@@ -70,7 +72,7 @@ public class PixelCabin {
         }
     }
 
-    public void doRotate() {
+    public void toggleRotate() {
         if (isInReleasePosition) {
             goToStowPosition();
         } else {
