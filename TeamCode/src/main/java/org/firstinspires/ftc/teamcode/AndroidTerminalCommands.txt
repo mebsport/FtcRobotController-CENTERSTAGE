@@ -1,0 +1,7 @@
+Start Server: adb start-server
+
+Connect To Robot: adb connect 192.168.43.1
+
+Disconnect From Robot: adb disconnect
+
+Kill Server (if it wont connect): adb kill-server
