@@ -251,6 +251,7 @@ public class Hardware {
         intakeMotor = hwMap.get(DcMotorEx.class, "motorIntake");
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeMotor.setMotorEnable();
         intake = new Intake(opMode, this);
         intake.init();
@@ -377,6 +378,19 @@ public class Hardware {
                 + "motorRBack power,"
                 + "motorRBack velocity,"
 
+                //Lift motors and touch sensors
+                + "liftMotor target pos,"
+                + "liftMotor current pos,"
+                + "liftMotor power,"
+                + "liftMotor velocity,"
+
+                + "hangMotor target pos,"
+                + "hangMotor current pos,"
+                + "hangMotor power,"
+                + "hangMotor velocity,"
+
+                + "LiftHomeButton,"
+                + "HangHomeButton,"
 
 //                + "frontDistance,"
 //                + "rearDistance,"
@@ -468,6 +482,20 @@ public class Hardware {
                     motorRBack.getCurrentPosition(),
                     motorRBack.getPower(),
                     motorRBack.getVelocity(),
+
+                    //Lift motors and touch sensors
+                    liftMotor.getTargetPosition(),
+                    liftMotor.getCurrentPosition(),
+                    liftMotor.getPower(),
+                    liftMotor.getVelocity(),
+
+                    hangMotor.getTargetPosition(),
+                    hangMotor.getCurrentPosition(),
+                    hangMotor.getPower(),
+                    hangMotor.getVelocity(),
+
+                    liftHomeButton.getValue(),
+                    hangStop.getValue(),
 
 
 //                    frontDistance.getDistance(DistanceUnit.INCH),
