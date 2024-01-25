@@ -137,12 +137,12 @@ public class Lift {
 //            hardware.pixelCabin.holdPixel();
 //        }
 
-        if (!isRising) {
-            hardware.pixelCabin.goToStowPosition();
-            hardware.pixelCabin.holdPixel();
-        } else if (liftCurrentPosition >= liftSafePosition) {
-            hardware.pixelCabin.goToReleasePosition();
-        }
+//        if (!isRising) {
+//            hardware.pixelCabin.goToStowPosition();
+//            hardware.pixelCabin.holdPixel();
+//        } else if (liftCurrentPosition >= liftSafePosition) {
+//            hardware.pixelCabin.goToReleasePosition();
+//        }
     }
 
     //Getters for power and position
@@ -161,7 +161,7 @@ public class Lift {
 
     public void setPosition(int targetPos, double targetPow) {
         int tp = Math.max(Math.min(targetPos, LIFT_MAXPOS), LIFT_MINPOS);
-        isRising = ((tp <= previousTargetPos) && 15 < (Math.abs((previousTargetPos - tp))));
+        isRising = ((tp <= previousTargetPos));
         liftMotor.setTargetPosition(tp);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         double tpw = targetPow;
@@ -183,7 +183,12 @@ public class Lift {
 
     //GOTO MIN & MAX Positions
     public void goMin() {
-        setPosition(LIFT_MINPOS);
+        if (previousTargetPos < 1000) {
+            hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 850, .6));
+
+        }
+        hardware.robo130.addCommand(new RCRotateCabin(hardware, 0, false));
+        hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, LIFT_MINPOS, .6));
     }
 
     public void goMax() {
