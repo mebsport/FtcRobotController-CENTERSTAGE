@@ -87,9 +87,9 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         }
 
         // Crop the images based off of the three locaitons
-        leftPos = mat.submat(0, 0, 0, 0);
-        rightPos = mat.submat(0, 0, 0, 0);
-        centerPos = mat.submat(0, 0, 0, 0);
+        leftPos = mat.submat(0, 357, 427, 724);
+        rightPos = mat.submat(898, 1255, 427, 724);
+        centerPos = mat.submat(386, 848, 427, 592);
 
         leftCount = Core.countNonZero(leftPos);
         rightCount = Core.countNonZero(rightPos);
