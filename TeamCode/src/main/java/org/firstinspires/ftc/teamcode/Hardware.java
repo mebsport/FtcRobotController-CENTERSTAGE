@@ -243,6 +243,7 @@ public class Hardware {
         //Lift
         liftMotor = hwMap.get(DcMotorEx.class, "motorLift");
         liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftHomeButton = hwMap.get(TouchSensor.class, "liftHome");
         lift = new Lift(opMode, this);
         lift.init();
@@ -264,6 +265,7 @@ public class Hardware {
 
         //Hanging System (RoboLift)
         hangMotor = hwMap.get(DcMotorEx.class, "motorHang");
+        hangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         hangStop = hwMap.get(TouchSensor.class, "hangHome");
         roboLift = new RoboLift(opMode, this);
         roboLift.init();
@@ -463,25 +465,25 @@ public class Hardware {
             double[] data = {currentTime,
                     deltaTime,
 
-                    motorLFront.getTargetPosition(),
-                    motorLFront.getCurrentPosition(),
-                    motorLFront.getPower(),
-                    motorLFront.getVelocity(),
+                    drive.leftFront.getTargetPosition(),
+                    drive.leftFront.getCurrentPosition(),
+                    drive.leftFront.getPower(),
+                    drive.leftFront.getVelocity(),
 
-                    motorLBack.getTargetPosition(),
-                    motorLBack.getCurrentPosition(),
-                    motorLBack.getPower(),
-                    motorLBack.getVelocity(),
+                    drive.leftRear.getTargetPosition(),
+                    drive.leftRear.getCurrentPosition(),
+                    drive.leftRear.getPower(),
+                    drive.leftRear.getVelocity(),
 
-                    motorRFront.getTargetPosition(),
-                    motorRFront.getCurrentPosition(),
-                    motorRFront.getPower(),
-                    motorRFront.getVelocity(),
+                    drive.rightFront.getTargetPosition(),
+                    drive.rightFront.getCurrentPosition(),
+                    drive.rightFront.getPower(),
+                    drive.rightFront.getVelocity(),
 
-                    motorRBack.getTargetPosition(),
-                    motorRBack.getCurrentPosition(),
-                    motorRBack.getPower(),
-                    motorRBack.getVelocity(),
+                    drive.rightRear.getTargetPosition(),
+                    drive.rightRear.getCurrentPosition(),
+                    drive.rightRear.getPower(),
+                    drive.rightRear.getVelocity(),
 
                     //Lift motors and touch sensors
                     liftMotor.getTargetPosition(),
