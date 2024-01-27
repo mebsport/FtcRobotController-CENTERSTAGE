@@ -29,6 +29,7 @@ public class OpMode2324 extends OpMode {
     private int liftTargetPosition = 0;
     private boolean liftManualMode = false;
     private int liftPreviousManualPosition = Lift.LIFT_MINPOS;
+    private boolean manualIntake = false;
 
     @Override
     public void init() {
@@ -177,6 +178,10 @@ public class OpMode2324 extends OpMode {
         }
         if (Math.abs(hardware.gamepad2_current_left_stick_y) > 0.03) {
             hardware.intake.goSpeedMode(hardware.gamepad2_current_left_stick_y);
+            manualIntake = true;
+        } else {
+            hardware.intake.stopMotor();
+            manualIntake = false;
         }
 
         //Cabin
