@@ -9,15 +9,15 @@ import java.io.IOException;
 public class RobotConfiguration {
     public boolean isRed = false;
     public boolean isLeftStartPos = false;
-    public boolean placeExtraPixels = false;
+    public boolean doParking = false;
 
     public RobotConfiguration() {
     }
 
-    public RobotConfiguration(boolean isRed, boolean isLeftStartPos, boolean placeExtraPixels) {
+    public RobotConfiguration(boolean isRed, boolean isLeftStartPos, boolean doParking) {
         this.isRed = isRed;
         this.isLeftStartPos = isLeftStartPos;
-        this.placeExtraPixels = placeExtraPixels;
+        this.doParking = doParking;
     }
 
     public void saveConfig() {
@@ -37,7 +37,7 @@ public class RobotConfiguration {
                 configFile.write('R');
             }
 
-            if (placeExtraPixels) {
+            if (doParking) {
                 configFile.write('Y');
             } else {
                 configFile.write('N');
@@ -65,7 +65,7 @@ public class RobotConfiguration {
 
             //Read Auto Setting
             tempValue = (char) configFile.read();
-            placeExtraPixels = tempValue == 'Y';
+            doParking = tempValue == 'Y';
 
             configFile.close();
         } catch (IOException e) {
