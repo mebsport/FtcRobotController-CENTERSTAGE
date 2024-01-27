@@ -26,6 +26,9 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     int leftCount = -999;
     int centerCount = -999;
     int rightCount = -999;
+    double leftPercent = 0.0;
+    double centerPercent = 0.0;
+    double rightPercent = 0.0;
     int spikeMark = -999;
     private int frame = 0;
 
@@ -87,17 +90,23 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         }
 
         // Crop the images based off of the three locaitons
-        leftPos = mat.submat(0, 357, 427, 724);
-        rightPos = mat.submat(898, 1255, 427, 724);
-        centerPos = mat.submat(386, 848, 427, 592);
+        leftPos = mat.submat(427, 719, 1, 357);
+        rightPos = mat.submat(427, 719, 898, 1255);
+        centerPos = mat.submat(427, 592, 386, 848);
 
         leftCount = Core.countNonZero(leftPos);
         rightCount = Core.countNonZero(rightPos);
         centerCount = Core.countNonZero(centerPos);
 
-        telemetry.addData("Left Count: ", leftCount);
-        telemetry.addData("Right Count: ", rightCount);
-        telemetry.addData("Center Count: ", centerCount);
+        //Percent = count / (width) * (height)
+        //For left and right multiply by .728 because they are bigger than the center image
+        leftPercent = 0.72 * ((double) leftCount / (float) ((719 - 427) * (357 - 1)));
+        rightPercent = 0.72 * ((double) rightCount / (float) ((719 - 427) * (1255 - 898)));
+        centerPercent = (double) centerCount / (float) ((592 - 427) * (848 - 386));
+
+        telemetry.addData("Left Count: ", leftPercent);
+        telemetry.addData("Right Count: ", rightPercent);
+        telemetry.addData("Center Count: ", centerPercent);
         telemetry.addData("Blue Count: ", blueCount);
         telemetry.addData("Red Count: ", redCount);
 
