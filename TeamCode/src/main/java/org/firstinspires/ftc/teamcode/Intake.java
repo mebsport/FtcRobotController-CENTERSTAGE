@@ -11,6 +11,7 @@ public class Intake {
     private DcMotorEx intakeMotor = null;
     private boolean isRunning = false;
     private boolean previousIsRunning = false;
+    private double slowdown = 0.6;
     public static final int INTAKE_POWER = 1; // NEED TO BE SET
 
 
@@ -47,5 +48,17 @@ public class Intake {
 
     private void intakeStop() {
         isRunning = false;
+    }
+
+    public void goSpeedMode(double speed) {
+        intakeMotor.setPower(speed * slowdown);
+    }
+
+    public void changeSlowdown() {
+        if (slowdown == 0.6) {
+            slowdown = 0.3;
+        } else {
+            slowdown = 0.6;
+        }
     }
 }
