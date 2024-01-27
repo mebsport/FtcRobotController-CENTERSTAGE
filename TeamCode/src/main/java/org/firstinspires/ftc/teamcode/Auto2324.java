@@ -27,6 +27,7 @@ public class Auto2324 extends OpMode {
     private final boolean secondRun = false;
 
     private final boolean testMode = false;
+    private final boolean onlyPark = false;
 
     public double startTime = 0.0;
 
@@ -102,6 +103,45 @@ public class Auto2324 extends OpMode {
             commandsGrabbed = true;
             ABORTCAMERASTUFFFFFFFFF = true;
         }
+        if (onlyPark && !commandsGrabbed) {
+            hardware.pixelCabin.goToStowPosition();
+            if (isRed && isLeftStartingPos) {
+                //Red Left
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .forward(3)
+                        .strafeRight(96)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+            } else if (isRed && !isLeftStartingPos) {
+                //Red Right
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .strafeRight(62)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+            } else if (!isRed && isLeftStartingPos) {
+                //Blue Left
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .strafeLeft(62)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+            } else {
+                //Blue Right
+                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                        .forward(3)
+                        .strafeLeft(96)
+                        .resetAccelConstraint()
+                        .build()
+                ));
+            }
+            commandsGrabbed = true;
+        }
 
 
         //Create Command Stack For Auto
@@ -135,15 +175,153 @@ public class Auto2324 extends OpMode {
             //Pick Color
             //Assign Tag
 
-            if (isRed & isLeftStartingPos) {
-                //RED LEFT
+            if (!commandsGrabbed) {
+                if (isRed & isLeftStartingPos) {
+                    //RED LEFT
+                    if (selectedSpikemark == 1) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(-45))
+                                .forward(7)
+                                .back(7)
+                                .turn(Math.toRadians(45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else if (selectedSpikemark == 2) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(29)
+                                .back(21)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(45))
+                                .forward(7)
+                                .back(7)
+                                .turn(Math.toRadians(-45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    }
+                    if (doParking) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
+                                .forward(3)
+                                .strafeRight(96)
+                                .build()
+                        ));
+                    }
+                    commandsGrabbed = true;
+
+
+                } else if (isRed & !isLeftStartingPos) {
+                    if (selectedSpikemark == 1) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(-45))
+                                .forward(7)
+                                .back(7)
+                                .turn(Math.toRadians(45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else if (selectedSpikemark == 2) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(19)
+                                .back(21)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(45))
+                                .forward(7)
+                                .back(7)
+                                .turn(Math.toRadians(-45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    }
+                    if (doParking) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
+                                .strafeRight(48)
+                                .build()
+                        ));
+                        commandsGrabbed = true;
+
+                    }
+
+                } else if (!isRed & isLeftStartingPos) {
+                    //BLUE LEFT
+                    if (selectedSpikemark == 1) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(-45))
+                                .forward(7)
+                                .back(7)
+                                .turn(Math.toRadians(45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else if (selectedSpikemark == 2) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(19)
+                                .back(21)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(45))
+                                .forward(7)
+                                .back(7)
+                                .turn(Math.toRadians(-45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    }
+
+                    if (doParking) {
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
+                                .strafeLeft(48)
+                                .build()
+                        ));
+                    }
+                    commandsGrabbed = true;
+
+                }
+            } else {
+                //BLUE RIGHT
+
                 if (selectedSpikemark == 1) {
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                             .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                             .forward(12)
                             .turn(Math.toRadians(-45))
-                            .forward(6)
-                            .back(6)
+                            .forward(7)
+                            .back(7)
                             .turn(Math.toRadians(45))
                             .back(14)
                             .resetAccelConstraint()
@@ -162,155 +340,26 @@ public class Auto2324 extends OpMode {
                             .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                             .forward(12)
                             .turn(Math.toRadians(45))
-                            .forward(6)
-                            .back(6)
+                            .forward(7)
+                            .back(7)
                             .turn(Math.toRadians(-45))
                             .back(14)
                             .resetAccelConstraint()
                             .build()
                     ));
                 }
+
                 if (doParking) {
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                             .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
                             .forward(3)
-                            .strafeRight(96)
+                            .strafeLeft(96)
                             .build()
                     ));
-                }
+                    commandsGrabbed = true;
 
-            } else if (isRed & !isLeftStartingPos) {
-                if (selectedSpikemark == 1) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(12)
-                            .turn(Math.toRadians(-45))
-                            .forward(6)
-                            .back(6)
-                            .turn(Math.toRadians(45))
-                            .back(14)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                } else if (selectedSpikemark == 2) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(18)
-                            .back(20)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                } else {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(12)
-                            .turn(Math.toRadians(45))
-                            .forward(6)
-                            .back(6)
-                            .turn(Math.toRadians(-45))
-                            .back(14)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                }
-                if (doParking) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
-                            .strafeRight(48)
-                            .build()
-                    ));
-                }
-
-            } else if (!isRed & isLeftStartingPos) {
-                //BLUE LEFT
-                if (selectedSpikemark == 1) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(12)
-                            .turn(Math.toRadians(-45))
-                            .forward(6)
-                            .back(6)
-                            .turn(Math.toRadians(45))
-                            .back(14)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                } else if (selectedSpikemark == 2) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(18)
-                            .back(20)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                } else {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(12)
-                            .turn(Math.toRadians(45))
-                            .forward(6)
-                            .back(6)
-                            .turn(Math.toRadians(-45))
-                            .back(14)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                }
-
-                if (doParking) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
-                            .strafeLeft(48)
-                            .build()
-                    ));
                 }
             }
-        } else {
-            //BLUE RIGHT
-
-            if (selectedSpikemark == 1) {
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                        .forward(12)
-                        .turn(Math.toRadians(-45))
-                        .forward(6)
-                        .back(6)
-                        .turn(Math.toRadians(45))
-                        .back(14)
-                        .resetAccelConstraint()
-                        .build()
-                ));
-            } else if (selectedSpikemark == 2) {
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                        .forward(18)
-                        .back(20)
-                        .resetAccelConstraint()
-                        .build()
-                ));
-            } else {
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                        .forward(12)
-                        .turn(Math.toRadians(45))
-                        .forward(6)
-                        .back(6)
-                        .turn(Math.toRadians(-45))
-                        .back(14)
-                        .resetAccelConstraint()
-                        .build()
-                ));
-            }
-
-            if (doParking) {
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
-                        .forward(3)
-                        .strafeLeft(96)
-                        .build()
-                ));
-            }
-            commandsGrabbed = true;
         }
 
         if (commandsGrabbed) {
