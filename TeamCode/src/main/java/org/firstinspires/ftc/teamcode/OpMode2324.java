@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -23,6 +24,7 @@ public class OpMode2324 extends OpMode {
     private final boolean isPreviousManualDrive = false;
     private final boolean isCurrentManualDrive = false;
     private double currentGasPedalPower = 1.0;
+    private boolean reverseControls = false;
 
     private int liftTargetPosition = 0;
     private boolean liftManualMode = false;
@@ -85,12 +87,48 @@ public class OpMode2324 extends OpMode {
         } else if (hardware.gamepad1_current_right_trigger > 0.5) {
             currentGasPedalPower = (Math.max(1.0 - hardware.gamepad1_current_right_trigger, 0.6));
         }
+
+        //Fix Reversed Driving
+        if (hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
+            reverseControls = !reverseControls;
+        }
+
         //Roadrunner Drive Controls
-        hardware.drive.setWeightedDrivePower(new Pose2d(
-                hardware.gamepad1_current_left_stick_y * currentGasPedalPower,
-                -hardware.gamepad1_current_left_stick_x * currentGasPedalPower,
-                -hardware.gamepad1_current_right_stick_x * currentGasPedalPower
-        ));
+        // Read pose
+        Pose2d poseEstimate = hardware.drive.getPoseEstimate();
+
+        // Create a vector from the gamepad x/y inputs
+        // Then, rotate that vector by the inverse of that heading
+        Vector2d input = new Vector2d(
+                -hardware.gamepad1_current_left_stick_y,
+                -hardware.gamepad1_current_left_stick_x
+        ).rotated(-poseEstimate.getHeading());
+
+        // Pass in the rotated input + right stick value for rotation
+        // Rotation is not part of the rotated input thus must be passed in separately
+        if (!reverseControls) {
+            hardware.drive.setWeightedDrivePower(
+                    new Pose2d(
+                            input.getX() * currentGasPedalPower,
+                            input.getY() * currentGasPedalPower,
+                            -hardware.gamepad1_current_right_stick_x * currentGasPedalPower
+                    )
+            );
+        } else {
+            hardware.drive.setWeightedDrivePower(
+                    new Pose2d(
+                            input.getY() * currentGasPedalPower,
+                            input.getX() * currentGasPedalPower,
+                            -hardware.gamepad1_current_right_stick_x * currentGasPedalPower
+                    )
+            );
+        }
+        //Old Roadrunner Drive Controls
+//                hardware.drive.setWeightedDrivePower(new Pose2d(
+//                hardware.gamepad1_current_left_stick_x * currentGasPedalPower,
+//                -1 * hardware.gamepad1_current_left_stick_y * currentGasPedalPower,
+//                hardware.gamepad1_current_right_stick_x * currentGasPedalPower
+//        ));
 
         //Hang System
         if (hardware.gamepad1_current_dpad_up && !hardware.gamepad1_previous_dpad_up) {
