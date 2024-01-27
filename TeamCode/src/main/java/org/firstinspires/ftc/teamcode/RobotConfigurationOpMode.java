@@ -41,7 +41,7 @@ public class RobotConfigurationOpMode extends LinearOpMode {
                     break;
                 }
             }
-            telemetry.addLine("Place Extra Pixels? Dpad Up for yes Dpad down for no");
+            telemetry.addLine("Do you want to park? Dpad Up for yes Dpad down for no");
             telemetry.update();
             while (true) {
                 if (gamepad1.dpad_up || gamepad2.dpad_up) {
