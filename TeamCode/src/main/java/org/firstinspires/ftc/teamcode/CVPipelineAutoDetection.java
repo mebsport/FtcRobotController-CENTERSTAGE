@@ -31,12 +31,18 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     double rightPercent = 0.0;
     int spikeMark = -999;
     private int frame = 0;
+    private final boolean configIsRed = false;
 
 
-    private final boolean firstRun = true;
+    private boolean firstRun = true;
 
     public CVPipelineAutoDetection(Telemetry telemetry) {
         this.telemetry = telemetry;
+    }
+
+    public CVPipelineAutoDetection(Telemetry telemetry, boolean configIsRed) {
+        this.telemetry = telemetry;
+        isRed = configIsRed;
     }
 
     public boolean isFrameSelected() {
@@ -67,6 +73,10 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGRA2BGR);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
 
+        if (firstRun) {
+            saveMatToDiskFullPath(mat, path + "HSVImage" + ".jpg");
+        }
+
         //Make a mask of the image using the high and low values for red and blue
         //RED
         Scalar redLowHSV = new Scalar(-5, 50, 50);
@@ -77,17 +87,24 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         Scalar blueHighHSV = new Scalar(125, 255, 255);
         Core.inRange(mat, blueLowHSV, blueHighHSV, blueIMG);
 
+        //Pick image based off  configuration
+        if (isRed) {
+            mat = redIMG;
+        } else {
+            mat = blueIMG;
+        }
+
         //Select an image to use based off the values in the red and blue images
         redCount = Core.countNonZero(redIMG);
         blueCount = Core.countNonZero(blueIMG);
 
-        if (redCount > blueCount) {
+/*        if (redCount > blueCount) {
             isRed = true;
             mat = redIMG;
         } else {
             isRed = false;
             mat = blueIMG;
-        }
+        }*/
 
         // Crop the images based off of the three locaitons
         leftPos = mat.submat(427, 719, 1, 357);
@@ -118,6 +135,17 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         } else {
             spikeMark = 3;
         }
+
+        if (firstRun) {
+            saveMatToDiskFullPath(input, path + "originalImage" + ".jpg");
+            saveMatToDiskFullPath(blueIMG, path + "blueImage" + ".jpg");
+            saveMatToDiskFullPath(redIMG, path + "redImage" + ".jpg");
+            saveMatToDiskFullPath(leftPos, path + "leftImage" + ".jpg");
+            saveMatToDiskFullPath(centerPos, path + "centerImage" + ".jpg");
+            saveMatToDiskFullPath(rightPos, path + "rightImage" + ".jpg");
+            firstRun = false;
+        }
+
 
         return mat;
     }

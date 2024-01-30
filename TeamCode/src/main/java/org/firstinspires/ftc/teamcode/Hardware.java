@@ -80,6 +80,9 @@ public class Hardware {
     //Drone Launcher
     public DcMotorEx droneLaunchMotor = null;
 
+    //Robo Config
+    public RobotConfiguration robotConfiguration = null;
+
     //Distance Sensors
 //    public Rev2mDistanceSensor frontDistance = null;
 //    public Rev2mDistanceSensor rearDistance = null;
@@ -210,8 +213,12 @@ public class Hardware {
 
         drive = new SampleMecanumDrive(hwMap); //Roadrunner drivetrain
 
+        //Robot Config
+        robotConfiguration = new RobotConfiguration();
+        robotConfiguration.readConfig();
+
         //Camera
-        webcamPipeline = new CVPipelineAutoDetection(opMode.telemetry);
+        webcamPipeline = new CVPipelineAutoDetection(opMode.telemetry, robotConfiguration.isRed);
         double fx = 578.272;
         double fy = 578.272;
         double cx = 402.145;
