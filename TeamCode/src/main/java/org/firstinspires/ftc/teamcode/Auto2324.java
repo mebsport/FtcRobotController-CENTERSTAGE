@@ -89,17 +89,7 @@ public class Auto2324 extends OpMode {
 
         if (testMode && !commandsGrabbed) {
             startPose = new Pose2d(0, 0);
-            hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                    .forward(24)
-                    .build()
-            ));
-            hardware.robo130.addCommand(new RCWait(hardware, 3));
-            hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                    .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                    .turn(Math.toRadians(90))
-                    .resetAccelConstraint()
-                    .build()
-            ));
+            //Put test code here
             commandsGrabbed = true;
             ABORTCAMERASTUFFFFFFFFF = true;
         }
@@ -352,7 +342,7 @@ public class Auto2324 extends OpMode {
                 if (doParking) {
                     hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                             .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
-                            .forward(3)
+                            .forward(2)
                             .strafeLeft(96)
                             .build()
                     ));
