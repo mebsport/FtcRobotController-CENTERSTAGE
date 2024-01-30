@@ -54,7 +54,7 @@ public class Auto2324 extends OpMode {
         telemetry.addLine("Configuration Fetched");
         telemetry.addData("Is Red?? ", isRed);
         telemetry.addData("Is Left Position? ", isLeftStartingPos);
-        telemetry.addData("Place Extra Pixels?", doParking);
+        telemetry.addData("Park?", doParking);
         telemetry.update();
 
         //Set Starting Position
