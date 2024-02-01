@@ -33,8 +33,8 @@ public class DriveConstants {
      * from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = true;
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(4, 0, 1,
-            7);
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(18, 0, 3,
+            9.5);
 
     //Voltage Compensated kF: 16.241880288261836
 
@@ -47,8 +47,8 @@ public class DriveConstants {
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
     public static double WHEEL_RADIUS = 1.88976; // in
-    public static double GEAR_RATIO = 1.5891; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 16.39; // in
+    public static double GEAR_RATIO = 1.0115; // output (wheel) speed / input (motor) speed
+    public static double TRACK_WIDTH = 15.80; // in ( Old: 16.39)
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -56,9 +56,9 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.045;
-    public static double kA = 0.006;
-    public static double kStatic = 0.06727;
+    public static double kV = 0.01784;
+    public static double kA = 0.0028;
+    public static double kStatic = 0.01;
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
@@ -69,7 +69,7 @@ public class DriveConstants {
      */
     public static double MAX_VEL = 80.7; //Max Recommended Velocity: 71.72722113807068 ||     Max Velocity: 89.65902642258834
     public static double MAX_ACCEL = 35.0;
-    public static double MAX_ANG_VEL = Math.toRadians(150); //Max Ang Velocity: 21.71077397507186
+    public static double MAX_ANG_VEL = Math.toRadians(160); //Max Ang Velocity: 21.71077397507186
     public static double MAX_ANG_ACCEL = Math.toRadians(184.026);
 
     /*
