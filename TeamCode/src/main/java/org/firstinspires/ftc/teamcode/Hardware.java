@@ -78,7 +78,8 @@ public class Hardware {
     RoboLift roboLift = null;
 
     //Drone Launcher
-    public DcMotorEx droneLaunchMotor = null;
+    public Servo droneLaunchServo = null;
+    public DroneLauncher droneLauncher = null;
 
     //Robo Config
     public RobotConfiguration robotConfiguration = null;
@@ -278,7 +279,9 @@ public class Hardware {
         roboLift.init();
 
         //Drone Launcher
-        droneLaunchMotor = null;
+        droneLaunchServo = hwMap.get(Servo.class, "droneLaunchServo");
+        droneLauncher = new DroneLauncher(opMode, this);
+        droneLauncher.init();
 
 
         // drive train HW

@@ -192,6 +192,11 @@ public class OpMode2324 extends OpMode {
             hardware.pixelCabin.toggleRotate();
         }
 
+        //Drone Launcher
+        if (hardware.gamepad2_current_dpad_up && !hardware.gamepad1_previous_dpad_up) {
+            hardware.droneLauncher.toggleLaunch();
+        }
+
 
         //COMMANDS
         if (hardware.gamepad1_current_x && !hardware.gamepad1_previous_x) {
