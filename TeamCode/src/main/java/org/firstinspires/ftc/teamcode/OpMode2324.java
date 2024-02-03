@@ -193,15 +193,19 @@ public class OpMode2324 extends OpMode {
         }
 
         //Drone Launcher
-        if (hardware.gamepad2_current_dpad_up && !hardware.gamepad1_previous_dpad_up) {
+        if (hardware.gamepad2_current_x && !hardware.gamepad1_previous_x) {
             hardware.droneLauncher.toggleLaunch();
+        } else if (hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left) {
+            hardware.droneLauncher.goLaunch();
+        } else if (hardware.gamepad2_current_dpad_right && !hardware.gamepad2_previous_dpad_right) {
+            hardware.droneLauncher.goHold();
         }
 
 
         //COMMANDS
-        if (hardware.gamepad1_current_x && !hardware.gamepad1_previous_x) {
-            hardware.robo130.cancelFutureCommands(); //XXX LOOK AT THIS LATER, THIS WILL PROBABLY BREAK THE ROBOT IN THE FUTURE LOL
-        }
+//        if (hardware.gamepad1_current_x && !hardware.gamepad1_previous_x) {
+//            hardware.robo130.cancelFutureCommands(); //XXX LOOK AT THIS LATER, THIS WILL PROBABLY BREAK THE ROBOT IN THE FUTURE LOL
+//        }
 
         hardware.robo130.processCommands();
 
