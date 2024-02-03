@@ -9,8 +9,8 @@ public class DroneLauncher {
 
     private Servo droneLaunchServo = null;
 
-    private final double holdPosition = 0.0; //Test And Set
-    private final double launchPositon = 0.0; //Test And Set
+    private final double holdPosition = 0.7; //Test And Set
+    private final double launchPositon = 0.4; //Test And Set
 
     public DroneLauncher(OpMode opMode, Hardware hardware) {
         this.opMode = opMode;
