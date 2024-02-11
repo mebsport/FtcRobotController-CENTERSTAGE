@@ -168,40 +168,45 @@ public class Auto2324 extends OpMode {
             if (!commandsGrabbed) {
                 if (isRed & isLeftStartingPos) {
                     //RED LEFT
+                    hardware.logMessage(false, "Auto2324", "Red Left");
                     if (selectedSpikemark == 1) {
+                        hardware.logMessage(false, "Auto2324", "Spike Position 1");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(12)
-                                .turn(Math.toRadians(-45))
-                                .forward(7)
-                                .back(7)
                                 .turn(Math.toRadians(45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(-45))
                                 .back(14)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                     } else if (selectedSpikemark == 2) {
+                        hardware.logMessage(false, "Auto2324", "Spike Position 2");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(29)
-                                .back(21)
+                                .forward(30)
+                                .back(30)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                     } else {
+                        hardware.logMessage(false, "Auto2324", "Spike Position 3");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(12)
-                                .turn(Math.toRadians(45))
-                                .forward(7)
-                                .back(7)
                                 .turn(Math.toRadians(-45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(45))
                                 .back(14)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                     }
                     if (doParking) {
+                        hardware.logMessage(false, "Auto2324", "Add Parking");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
                                 .forward(3)
@@ -213,40 +218,47 @@ public class Auto2324 extends OpMode {
 
 
                 } else if (isRed & !isLeftStartingPos) {
+                    //Red Right
+                    hardware.logMessage(false, "Auto2324", "Red Right");
                     if (selectedSpikemark == 1) {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 1");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(12)
-                                .turn(Math.toRadians(-45))
-                                .forward(7)
-                                .back(7)
                                 .turn(Math.toRadians(45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(-45))
                                 .back(14)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                     } else if (selectedSpikemark == 2) {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 2");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(19)
-                                .back(21)
+                                .forward(30)
+                                .back(30)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                     } else {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 3");
+
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(12)
-                                .turn(Math.toRadians(45))
-                                .forward(7)
-                                .back(7)
                                 .turn(Math.toRadians(-45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(45))
                                 .back(14)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                     }
                     if (doParking) {
+                        hardware.logMessage(false, "Auto2324", "Add Parking");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
                                 .strafeRight(48)
@@ -257,20 +269,25 @@ public class Auto2324 extends OpMode {
                     }
 
                 } else if (!isRed & isLeftStartingPos) {
+                    hardware.logMessage(false, "Auto2324", "Blue Left");
                     //BLUE LEFT
                     if (selectedSpikemark == 1) {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 1");
+
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(12)
-                                .turn(Math.toRadians(-45))
-                                .forward(7)
-                                .back(7)
                                 .turn(Math.toRadians(45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(-45))
                                 .back(14)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                     } else if (selectedSpikemark == 2) {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 2");
+
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(19)
@@ -279,13 +296,15 @@ public class Auto2324 extends OpMode {
                                 .build()
                         ));
                     } else {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 3");
+
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(12)
-                                .turn(Math.toRadians(45))
-                                .forward(7)
-                                .back(7)
                                 .turn(Math.toRadians(-45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(45))
                                 .back(14)
                                 .resetAccelConstraint()
                                 .build()
@@ -293,6 +312,8 @@ public class Auto2324 extends OpMode {
                     }
 
                     if (doParking) {
+                        hardware.logMessage(false, "Auto2324", "Add Parking");
+
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
                                 .strafeLeft(48)
@@ -301,55 +322,65 @@ public class Auto2324 extends OpMode {
                     }
                     commandsGrabbed = true;
 
-                }
-            } else {
-                //BLUE RIGHT
-
-                if (selectedSpikemark == 1) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(12)
-                            .turn(Math.toRadians(-45))
-                            .forward(7)
-                            .back(7)
-                            .turn(Math.toRadians(45))
-                            .back(14)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                } else if (selectedSpikemark == 2) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(18)
-                            .back(20)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
                 } else {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                            .forward(12)
-                            .turn(Math.toRadians(45))
-                            .forward(7)
-                            .back(7)
-                            .turn(Math.toRadians(-45))
-                            .back(14)
-                            .resetAccelConstraint()
-                            .build()
-                    ));
-                }
+                    //BLUE RIGHT
+                    hardware.logMessage(false, "Auto2324", "Blue Right");
 
-                if (doParking) {
-                    hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                            .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
-                            .forward(2)
-                            .strafeLeft(96)
-                            .build()
-                    ));
-                    commandsGrabbed = true;
+                    if (selectedSpikemark == 1) {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 1");
 
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(-45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else if (selectedSpikemark == 2) {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 2");
+
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(18)
+                                .back(20)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    } else {
+                        hardware.logMessage(false, "Auto2324", "Spike Mark 3");
+
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(12)
+                                .turn(Math.toRadians(-45))
+                                .forward(14)
+                                .back(14)
+                                .turn(Math.toRadians(45))
+                                .back(14)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                    }
+
+                    if (doParking) {
+                        hardware.logMessage(false, "Auto2324", "Add Parking");
+
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
+                                .forward(2)
+                                .strafeLeft(96)
+                                .build()
+                        ));
+                        commandsGrabbed = true;
+
+                    }
                 }
             }
+            commandsGrabbed = true;
         }
 
         if (commandsGrabbed) {

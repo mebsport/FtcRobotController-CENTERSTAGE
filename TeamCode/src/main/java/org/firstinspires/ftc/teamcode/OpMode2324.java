@@ -179,7 +179,7 @@ public class OpMode2324 extends OpMode {
         if (Math.abs(hardware.gamepad2_current_left_stick_y) > 0.03) {
             hardware.intake.goSpeedMode(hardware.gamepad2_current_left_stick_y);
             manualIntake = true;
-        } else {
+        } else if (manualIntake) {
             hardware.intake.stopMotor();
             manualIntake = false;
         }
@@ -193,7 +193,7 @@ public class OpMode2324 extends OpMode {
         }
 
         //Drone Launcher
-        if (hardware.gamepad2_current_x && !hardware.gamepad1_previous_x) {
+        if (hardware.gamepad2_current_x && !hardware.gamepad2_previous_x) {
             hardware.droneLauncher.toggleLaunch();
         } else if (hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left) {
             hardware.droneLauncher.goLaunch();

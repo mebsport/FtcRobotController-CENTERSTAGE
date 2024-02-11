@@ -12,6 +12,8 @@ public class DroneLauncher {
     private final double holdPosition = 0.7; //Test And Set
     private final double launchPositon = 0.4; //Test And Set
 
+    private boolean isAtHold = true;
+
     public DroneLauncher(OpMode opMode, Hardware hardware) {
         this.opMode = opMode;
         this.hardware = hardware;
@@ -19,14 +21,17 @@ public class DroneLauncher {
 
     public void init() {
         droneLaunchServo = hardware.droneLaunchServo;
+        goHold();
     }
 
     public void goLaunch() {
         droneLaunchServo.setPosition(launchPositon);
+        isAtHold = false;
     }
 
     public void goHold() {
         droneLaunchServo.setPosition(holdPosition);
+        isAtHold = true;
     }
 
     public void setPosition(double position) {
@@ -34,7 +39,7 @@ public class DroneLauncher {
     }
 
     public void toggleLaunch() {
-        if (droneLaunchServo.getPosition() == holdPosition) {
+        if (isAtHold) {
             goLaunch();
         } else {
             goHold();

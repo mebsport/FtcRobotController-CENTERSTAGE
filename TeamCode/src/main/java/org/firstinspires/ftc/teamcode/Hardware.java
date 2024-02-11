@@ -274,6 +274,7 @@ public class Hardware {
         //Hanging System (RoboLift)
         hangMotor = hwMap.get(DcMotorEx.class, "motorHang");
         hangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        hangMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         hangStop = hwMap.get(TouchSensor.class, "hangHome");
         roboLift = new RoboLift(opMode, this);
         roboLift.init();
@@ -347,7 +348,7 @@ public class Hardware {
 
     public void start() {
         logCSVData();
-
+        droneLauncher.goHold();
         updatePreviousValues();
     }
 

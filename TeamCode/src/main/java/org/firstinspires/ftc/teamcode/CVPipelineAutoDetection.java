@@ -16,6 +16,10 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     public boolean isRed = false;
     Mat mat = new Mat();
     Mat blueIMG = new Mat();
+    Mat red1 = new Mat();
+
+    Mat red2 = new Mat();
+
     Mat redIMG = new Mat();
     Mat leftPos = new Mat();
     Mat centerPos = new Mat();
@@ -64,6 +68,8 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
 
         mat.release();
         blueIMG.release();
+        red1.release();
+        red2.release();
         redIMG.release();
         leftPos.release();
         centerPos.release();
@@ -79,12 +85,18 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
 
         //Make a mask of the image using the high and low values for red and blue
         //RED
-        Scalar redLowHSV = new Scalar(-5, 50, 50);
-        Scalar redHighHSV = new Scalar(15, 255, 255);
-        Core.inRange(mat, redLowHSV, redHighHSV, redIMG);
+        Scalar redLowHSV2 = new Scalar(175, 50, 50);
+        Scalar redHighHSV2 = new Scalar(180, 225, 225);
+        Core.inRange(mat, redLowHSV2, redHighHSV2, red2);
+        Scalar redLowHSV1 = new Scalar(0, 50, 50);
+        Scalar redHighHSV1 = new Scalar(15, 255, 255);
+        Core.inRange(mat, redLowHSV1, redHighHSV1, red1);
+        Core.bitwise_or(red1, red2, redIMG);
         //BLUE
-        Scalar blueLowHSV = new Scalar(105, 50, 50);
-        Scalar blueHighHSV = new Scalar(125, 255, 255);
+//        Scalar blueLowHSV = new Scalar(105, 50, 50);
+//        Scalar blueHighHSV = new Scalar(125, 255, 255);
+        Scalar blueLowHSV = new Scalar(95, 50, 50);
+        Scalar blueHighHSV = new Scalar(116, 255, 255);
         Core.inRange(mat, blueLowHSV, blueHighHSV, blueIMG);
 
         //Pick image based off  configuration
@@ -107,23 +119,22 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         }*/
 
         // Crop the images based off of the three locaitons
-        leftPos = mat.submat(427, 719, 1, 357);
-        rightPos = mat.submat(427, 719, 898, 1255);
-        centerPos = mat.submat(427, 592, 386, 848);
+        leftPos = mat.submat(326, 708, 74, 246);
+        rightPos = mat.submat(326, 708, 979, 1151);
+        centerPos = mat.submat(428, 600, 424, 806);
 
         leftCount = Core.countNonZero(leftPos);
         rightCount = Core.countNonZero(rightPos);
         centerCount = Core.countNonZero(centerPos);
 
         //Percent = count / (width) * (height)
-        //For left and right multiply by .728 because they are bigger than the center image
-        leftPercent = 0.72 * ((double) leftCount / (float) ((719 - 427) * (357 - 1)));
-        rightPercent = 0.72 * ((double) rightCount / (float) ((719 - 427) * (1255 - 898)));
-        centerPercent = (double) centerCount / (float) ((592 - 427) * (848 - 386));
+/*        leftPercent = ((double) leftCount / (float) ((719 - 427) * (357 - 1)));
+        rightPercent = ((double) rightCount / (float) ((719 - 427) * (1255 - 898)));
+        centerPercent = (double) centerCount / (float) ((592 - 427) * (848 - 386));*/
 
-        telemetry.addData("Left Count: ", leftPercent);
-        telemetry.addData("Right Count: ", rightPercent);
-        telemetry.addData("Center Count: ", centerPercent);
+        telemetry.addData("Left Count: ", leftCount);
+        telemetry.addData("Right Count: ", rightCount);
+        telemetry.addData("Center Count: ", centerCount);
         telemetry.addData("Blue Count: ", blueCount);
         telemetry.addData("Red Count: ", redCount);
 
