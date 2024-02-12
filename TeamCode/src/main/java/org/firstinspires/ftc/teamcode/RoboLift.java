@@ -18,16 +18,16 @@ public class RoboLift {
 
     private final ElapsedTime runtime = new ElapsedTime();
     private final ElapsedTime timeout = new ElapsedTime();
-    public static final int LIFT_MAXPOS = 24000;
+    public static final int LIFT_MAXPOS = 8200;
     public static final int LIFT_MINPOS = 50;
-    public static final int HANG_POS = 6500;
+    public static final int HANG_POS = 400;
     public static final double LIFT_MAX_SPEED = 1.0; // NEED TO BE SET
     public static final double LIFT_MANUAL_SPEED = LIFT_MAX_SPEED * .90;
     public static final int PIXEL_MOVE_SIZE = -999; // NEED TO BE SET
 
     private double startTime = 0;
     private final double liftPower = 1.0;
-    private final double liftHomingPower = -0.5;
+    private final double liftHomingPower = -0.35;
     private int previousTargetPos = 0;
 
     private static final int LIFTNOTHOMED = 0;
@@ -189,7 +189,7 @@ public class RoboLift {
         startTime = opMode.time;
         hardware.liftMotor.setMotorEnable();
         hangMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        hangMotor.setPower(liftPower * 0.5);
+        hangMotor.setPower(liftPower * 0.2);
         hardware.logMessage(false, "Robo Hang", "Lift State: Backing Off Home");
         state = LIFTBACKOFFHOME;
     }
