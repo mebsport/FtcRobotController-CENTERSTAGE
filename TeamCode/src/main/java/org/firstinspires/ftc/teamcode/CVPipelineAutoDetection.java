@@ -95,8 +95,8 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         //BLUE
 //        Scalar blueLowHSV = new Scalar(105, 50, 50);
 //        Scalar blueHighHSV = new Scalar(125, 255, 255);
-        Scalar blueLowHSV = new Scalar(95, 50, 50);
-        Scalar blueHighHSV = new Scalar(116, 255, 255);
+        Scalar blueLowHSV = new Scalar(151, 50, 50);
+        Scalar blueHighHSV = new Scalar(171, 255, 255);
         Core.inRange(mat, blueLowHSV, blueHighHSV, blueIMG);
 
         //Pick image based off  configuration
