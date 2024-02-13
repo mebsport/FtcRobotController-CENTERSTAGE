@@ -24,6 +24,7 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     Mat leftPos = new Mat();
     Mat centerPos = new Mat();
     Mat rightPos = new Mat();
+    Mat rgbImage = new Mat();
 
     int redCount = -999;
     int blueCount = -999;
@@ -60,6 +61,9 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         frame++;
+        if(firstRun){
+            saveMatToDiskFullPath(input, path + "originalImage" + ".jpg");
+        }
 
         // Clean up system memory
         if (frame % 40 == 0) {
@@ -77,26 +81,40 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
 
         // Convert the image into HSV
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGRA2BGR);
+        Imgproc.cvtColor(input,rgbImage,Imgproc.COLOR_BGR2RGB);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
 
         if (firstRun) {
+            saveMatToDiskFullPath(rgbImage, path + "OriginalRGB" + ".jpg");
             saveMatToDiskFullPath(mat, path + "HSVImage" + ".jpg");
         }
 
-        //Make a mask of the image using the high and low values for red and blue
-        //RED
+        /*
+        - When using online RGB to HSV converter swap red and blue values
+        - And also make sure the H value is going from 0 to 180
+        - For the range H is +/- 10 and S & V are 50-255
+        - If H range is near 0 (going negative to positive) make two seperate ranges at the wrap around point and bitwise or them together
+
+        EX (original H: 5):
+        //High Range is 175-18
         Scalar redLowHSV2 = new Scalar(175, 50, 50);
         Scalar redHighHSV2 = new Scalar(180, 225, 225);
         Core.inRange(mat, redLowHSV2, redHighHSV2, red2);
+        //Lower Range iss 0-15
         Scalar redLowHSV1 = new Scalar(0, 50, 50);
         Scalar redHighHSV1 = new Scalar(15, 255, 255);
         Core.inRange(mat, redLowHSV1, redHighHSV1, red1);
         Core.bitwise_or(red1, red2, redIMG);
+        */
+
+        //Make a mask of the image using the high and low values for red and blue
+        //RED
+        Scalar redLowHSV = new Scalar(106, 50, 50);
+        Scalar redHighHSV = new Scalar(126, 225, 225);
+        Core.inRange(mat, redLowHSV, redHighHSV, redIMG);
         //BLUE
-//        Scalar blueLowHSV = new Scalar(105, 50, 50);
-//        Scalar blueHighHSV = new Scalar(125, 255, 255);
-        Scalar blueLowHSV = new Scalar(151, 50, 50);
-        Scalar blueHighHSV = new Scalar(171, 255, 255);
+        Scalar blueLowHSV = new Scalar(8, 50, 50);
+        Scalar blueHighHSV = new Scalar(28, 255, 255);
         Core.inRange(mat, blueLowHSV, blueHighHSV, blueIMG);
 
         //Pick image based off  configuration
@@ -148,7 +166,7 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         }
 
         if (firstRun) {
-            saveMatToDiskFullPath(input, path + "originalImage" + ".jpg");
+            saveMatToDiskFullPath(input, path + "originalImageConverted" + ".jpg");
             saveMatToDiskFullPath(blueIMG, path + "blueImage" + ".jpg");
             saveMatToDiskFullPath(redIMG, path + "redImage" + ".jpg");
             saveMatToDiskFullPath(leftPos, path + "leftImage" + ".jpg");
