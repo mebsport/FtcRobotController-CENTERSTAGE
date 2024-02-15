@@ -97,45 +97,6 @@ public class Auto2324 extends OpMode {
             commandsGrabbed = true;
             SKIPCAMERA = true;
         }
-        if (onlyPark && !commandsGrabbed) {
-            hardware.pixelCabin.goToStowPosition();
-            if (isRed && isLeftStartingPos) {
-                //Red Left
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                        .forward(3)
-                        .strafeRight(96)
-                        .resetAccelConstraint()
-                        .build()
-                ));
-            } else if (isRed && !isLeftStartingPos) {
-                //Red Right
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                        .strafeRight(62)
-                        .resetAccelConstraint()
-                        .build()
-                ));
-            } else if (!isRed && isLeftStartingPos) {
-                //Blue Left
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                        .strafeLeft(62)
-                        .resetAccelConstraint()
-                        .build()
-                ));
-            } else {
-                //Blue Right
-                hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
-                        .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                        .forward(3)
-                        .strafeLeft(96)
-                        .resetAccelConstraint()
-                        .build()
-                ));
-            }
-            commandsGrabbed = true;
-        }
 
 
         //Create Command Stack For Auto
@@ -160,14 +121,11 @@ public class Auto2324 extends OpMode {
                 } else {
                     selectedTag = 3;
                 }
+                hardware.logMessage(false, "Auto2324", "Selected SpikeMark = " + selectedSpikemark);
+                hardware.logMessage(false, "Auto2324", "Selected Tag = " + selectedTag);
             }
 
             hardware.drive.setPoseEstimate(startPose);
-
-            //General CMDS FOR ALL INSTANCES
-
-            //Pick Color
-            //Assign Tag
 
             if (!commandsGrabbed) {
                 if (isRed & isLeftStartingPos) {
@@ -415,7 +373,6 @@ public class Auto2324 extends OpMode {
                         ));
                     } else {
                         hardware.logMessage(false, "Auto2324", "Spike Mark 3");
-
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
                                 .forward(FIRSTLEFTRIGHTDISTANCE)
@@ -451,10 +408,8 @@ public class Auto2324 extends OpMode {
                                 .resetAccelConstraint()
                                 .build()
                         ));
-                        }
                     }
                     commandsGrabbed = true;
-
                 } else {
                     //BLUE RIGHT
                     hardware.logMessage(false, "Auto2324", "Blue Right");
@@ -514,7 +469,6 @@ public class Auto2324 extends OpMode {
                     }
                 }
             }
-            commandsGrabbed = true;
         }
 
         if (commandsGrabbed) {
