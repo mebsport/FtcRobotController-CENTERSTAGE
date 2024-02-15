@@ -23,6 +23,8 @@ public class Auto2324 extends OpMode {
     private final TrajectorySequence previousSequence = null;
     private boolean commandsGrabbed = false;
 
+    public final double FIRSTLEFTRIGHTDISTANCE = 18;
+
     private final boolean firstRun = true;
     private final boolean secondRun = false;
 
@@ -90,6 +92,33 @@ public class Auto2324 extends OpMode {
         if (testMode && !commandsGrabbed) {
             startPose = new Pose2d(0, 0);
             //Put test code here
+            hardware.logMessage(false, "Auto2324", "Test Mode");
+            hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
+                    .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                    .forward(3)
+                    .strafeRight(3)
+                    .forward(5)
+                    .turn(Math.toRadians(-90))
+                    .forward(36)
+                    .strafeLeft(11)
+                    .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 5.0))
+                    .forward(2)
+                    .resetAccelConstraint()
+                    .build()
+            ));
+            hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,1090, .5, false));
+            hardware.robo130.addCommand(new RCRotateCabin(hardware,RCRotateCabin.CMD_RELEASE,false));
+            hardware.robo130.addCommand(new RCRotateDoor(hardware,RCRotateDoor.CMD_RELEASE,false));
+            hardware.robo130.addCommand(new RCRotateDoor(hardware,RCRotateDoor.CMD_HOLD,true));
+            hardware.robo130.addCommand(new RCRotateCabin(hardware,RCRotateCabin.CMD_STOW,false));
+            hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,1090, 50, false));
+            hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                    .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                    .strafeRight(25)
+                    .forward(12)
+                    .resetAccelConstraint()
+                    .build()
+            ));
             commandsGrabbed = true;
             ABORTCAMERASTUFFFFFFFFF = true;
         }
@@ -173,15 +202,16 @@ public class Auto2324 extends OpMode {
                         hardware.logMessage(false, "Auto2324", "Spike Position 1");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(45))
-                                .forward(14)
-                                .back(14)
+                                .forward(6)
+                                .back(6)
                                 .turn(Math.toRadians(-45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE +2)
                                 .resetAccelConstraint()
                                 .build()
                         ));
+
                     } else if (selectedSpikemark == 2) {
                         hardware.logMessage(false, "Auto2324", "Spike Position 2");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
@@ -195,12 +225,12 @@ public class Auto2324 extends OpMode {
                         hardware.logMessage(false, "Auto2324", "Spike Position 3");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(-45))
                                 .forward(14)
                                 .back(14)
                                 .turn(Math.toRadians(45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE +2)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -210,7 +240,9 @@ public class Auto2324 extends OpMode {
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
                                 .forward(3)
-                                .strafeRight(96)
+                                .strafeLeft(22)
+                                .forward(49)
+                                .strafeRight(123)
                                 .build()
                         ));
                     }
@@ -224,12 +256,12 @@ public class Auto2324 extends OpMode {
                         hardware.logMessage(false, "Auto2324", "Spike Mark 1");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(45))
                                 .forward(14)
                                 .back(14)
                                 .turn(Math.toRadians(-45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE +2)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -242,17 +274,46 @@ public class Auto2324 extends OpMode {
                                 .resetAccelConstraint()
                                 .build()
                         ));
+                        hardware.logMessage(false, "Auto2324", "Test Mode");
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(3)
+                                .strafeRight(3)
+                                .forward(5)
+                                .turn(Math.toRadians(-90))
+                                .forward(33)
+                                .strafeLeft(17)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 5.0))
+                                .forward(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,1090, .5, false));
+                        hardware.robo130.addCommand(new RCRotateCabin(hardware,RCRotateCabin.CMD_RELEASE,false));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware,RCRotateDoor.CMD_RELEASE,false));
+                        hardware.robo130.addCommand(new RCWait(hardware,1.0));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware,RCRotateDoor.CMD_HOLD,false));
+                        hardware.robo130.addCommand(new RCRotateCabin(hardware,RCRotateCabin.CMD_STOW,false));
+                        hardware.robo130.addCommand(new RCLiftGoToPosition(hardware,1090, 50, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .back(3)
+                                .strafeRight(30)
+                                .forward(12)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                     } else {
                         hardware.logMessage(false, "Auto2324", "Spike Mark 3");
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(-45))
                                 .forward(14)
                                 .back(14)
                                 .turn(Math.toRadians(45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE +2)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -276,12 +337,12 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(45))
                                 .forward(14)
                                 .back(14)
                                 .turn(Math.toRadians(-45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE +2)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -300,12 +361,12 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(-45))
                                 .forward(14)
                                 .back(14)
                                 .turn(Math.toRadians(45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE +2)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -331,12 +392,12 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(45))
                                 .forward(14)
                                 .back(14)
                                 .turn(Math.toRadians(-45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -355,12 +416,12 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(12)
+                                .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(-45))
                                 .forward(14)
                                 .back(14)
                                 .turn(Math.toRadians(45))
-                                .back(14)
+                                .back(FIRSTLEFTRIGHTDISTANCE)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -370,9 +431,10 @@ public class Auto2324 extends OpMode {
                         hardware.logMessage(false, "Auto2324", "Add Parking");
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 1.5))
-                                .forward(2)
-                                .strafeLeft(96)
+                                .forward(3)
+                                .strafeRight(22)
+                                .forward(49)
+                                .strafeLeft(123)
                                 .build()
                         ));
                         commandsGrabbed = true;
