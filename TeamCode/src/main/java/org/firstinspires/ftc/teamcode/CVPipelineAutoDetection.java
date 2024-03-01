@@ -61,7 +61,7 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         frame++;
-        if(firstRun){
+        if (firstRun) {
             saveMatToDiskFullPath(input, path + "originalImage" + ".jpg");
         }
 
@@ -81,7 +81,7 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
 
         // Convert the image into HSV
         Imgproc.cvtColor(input, input, Imgproc.COLOR_BGRA2BGR);
-        Imgproc.cvtColor(input,rgbImage,Imgproc.COLOR_BGR2RGB);
+        Imgproc.cvtColor(input, rgbImage, Imgproc.COLOR_BGR2RGB);
         Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
 
         if (firstRun) {
