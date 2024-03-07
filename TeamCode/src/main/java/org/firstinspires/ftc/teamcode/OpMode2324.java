@@ -166,23 +166,6 @@ public class OpMode2324 extends OpMode {
 
         hardware.liftManualMode = liftManualMode;
 
-        //Intake
-        if (hardware.gamepad2_current_left_bumper && !hardware.gamepad2_previous_left_bumper) {
-            hardware.intake.stopMotor();
-        } else if (hardware.gamepad2_current_right_bumper && !hardware.gamepad2_previous_right_bumper) {
-            hardware.intake.startMotor();
-        }
-        //Manual intake with joystick
-        if (hardware.gamepad2_current_y && !hardware.gamepad2_previous_y) {
-            hardware.intake.changeSlowdown();
-        }
-        if (Math.abs(hardware.gamepad2_current_left_stick_y) > 0.03) {
-            hardware.intake.goSpeedMode(hardware.gamepad2_current_left_stick_y);
-            manualIntake = true;
-        } else if (manualIntake) {
-            hardware.intake.stopMotor();
-            manualIntake = false;
-        }
 
         //Cabin
         if (hardware.gamepad2_current_a && !hardware.gamepad2_previous_a) {

@@ -62,10 +62,6 @@ public class Hardware {
     public Lift lift = null;
     public boolean liftManualMode = false;
 
-    //Intake
-    public DcMotorEx intakeMotor = null;
-    public Intake intake = null;
-
     //Pixel Cabin
     public Servo cabinRotationServo = null;
     public Servo cabinHoldServo = null;
@@ -256,14 +252,6 @@ public class Hardware {
         lift = new Lift(opMode, this);
         lift.init();
 
-        //Intake
-        intakeMotor = hwMap.get(DcMotorEx.class, "motorIntake");
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intakeMotor.setMotorEnable();
-        intake = new Intake(opMode, this);
-        intake.init();
 
         //Pixel Cabin
         cabinRotationServo = hwMap.get(Servo.class, "cabinRotateServo");

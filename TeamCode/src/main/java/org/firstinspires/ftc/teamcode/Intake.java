@@ -21,7 +21,7 @@ public class Intake {
     }
 
     public void init() {
-        intakeMotor = hardware.intakeMotor;
+        //intakeMotor = hardware.intakeMotor;
     }
 
     public void loop() {
