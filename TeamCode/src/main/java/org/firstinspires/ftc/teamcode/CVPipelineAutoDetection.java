@@ -5,6 +5,7 @@ import android.os.Environment;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
@@ -26,6 +27,8 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     Mat rightPos = new Mat();
     Mat rgbImage = new Mat();
 
+    Mat originalImage = new Mat();
+
     int redCount = -999;
     int blueCount = -999;
     int leftCount = -999;
@@ -37,6 +40,20 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     int spikeMark = -999;
     private int frame = 0;
     private final boolean configIsRed = false;
+
+    private Scalar greenColor = new Scalar(0,255,0);
+    private Point left_upperLeft = new Point(74,369);
+    private Point left_bottomRight = new Point(374,719);
+    private Point center_upperLeft = new Point(520,350);
+    private Point center_bottomRight = new Point(820,700);
+    private Point right_upperLeft = new Point(967,369);
+    private Point right_bottomRight = new Point(1267,719);
+
+    private boolean majorityLeft;
+    private boolean majorityCenter;
+    private boolean majorityRight;
+
+
 
 
     private boolean firstRun = true;
@@ -62,6 +79,9 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
         frame++;
         if (firstRun) {
+            Imgproc.rectangle(input, left_upperLeft, left_bottomRight, greenColor,3);
+            Imgproc.rectangle(input, center_upperLeft, center_bottomRight, greenColor,3);
+            Imgproc.rectangle(input, right_upperLeft, right_bottomRight, greenColor,3);
             saveMatToDiskFullPath(input, path + "originalImage" + ".jpg");
         }
 
@@ -109,8 +129,8 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
 
         //Make a mask of the image using the high and low values for red and blue
         //RED
-        Scalar redLowHSV = new Scalar(106, 50, 50);
-        Scalar redHighHSV = new Scalar(126, 225, 225);
+        Scalar redLowHSV = new Scalar(111, 50, 50);
+        Scalar redHighHSV = new Scalar(131, 255, 255);
         Core.inRange(mat, redLowHSV, redHighHSV, redIMG);
         //BLUE
         Scalar blueLowHSV = new Scalar(8, 50, 50);
@@ -137,9 +157,9 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
         }*/
 
         // Crop the images based off of the three locaitons
-        leftPos = mat.submat(326, 708, 74, 246);
-        rightPos = mat.submat(326, 708, 979, 1151);
-        centerPos = mat.submat(428, 600, 424, 806);
+        leftPos = mat.submat((int)left_upperLeft.y, (int) left_bottomRight.y, (int)left_upperLeft.x, (int)left_bottomRight.x);
+        centerPos = mat.submat((int)center_upperLeft.y, (int) center_bottomRight.y, (int)center_upperLeft.x, (int)center_bottomRight.x);
+        rightPos = mat.submat((int)right_upperLeft.y, (int) right_bottomRight.y, (int)right_upperLeft.x, (int)right_bottomRight.x);
 
         leftCount = Core.countNonZero(leftPos);
         rightCount = Core.countNonZero(rightPos);
@@ -149,13 +169,6 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
 /*        leftPercent = ((double) leftCount / (float) ((719 - 427) * (357 - 1)));
         rightPercent = ((double) rightCount / (float) ((719 - 427) * (1255 - 898)));
         centerPercent = (double) centerCount / (float) ((592 - 427) * (848 - 386));*/
-
-        telemetry.addData("Left Count: ", leftCount);
-        telemetry.addData("Right Count: ", rightCount);
-        telemetry.addData("Center Count: ", centerCount);
-        telemetry.addData("Blue Count: ", blueCount);
-        telemetry.addData("Red Count: ", redCount);
-
 
         if (leftCount > centerCount && leftCount > rightCount) {
             spikeMark = 1;
@@ -175,7 +188,25 @@ public class CVPipelineAutoDetection extends OpenCvPipeline {
             firstRun = false;
         }
 
+        originalImage = input;
+
+        telemetry.addData("Left Count: ", leftCount);
+        telemetry.addData("Right Count: ", rightCount);
+        telemetry.addData("Center Count: ", centerCount);
+        telemetry.addData("Blue Count: ", blueCount);
+        telemetry.addData("Red Count: ", redCount);
+        telemetry.addData("Cube Position", spikeMark);
 
         return mat;
+    }
+
+    public void saveProcessedImages()
+    {
+        saveMatToDiskFullPath(originalImage, path + "originalImageConvertedOnDecision" + ".jpg");
+        saveMatToDiskFullPath(blueIMG, path + "blueImageOnDecision" + ".jpg");
+        saveMatToDiskFullPath(redIMG, path + "redImageOnDecision" + ".jpg");
+        saveMatToDiskFullPath(leftPos, path + "leftImageOnDecision" + ".jpg");
+        saveMatToDiskFullPath(centerPos, path + "centerImageOnDecision" + ".jpg");
+        saveMatToDiskFullPath(rightPos, path + "rightImageOnDecision" + ".jpg");
     }
 }

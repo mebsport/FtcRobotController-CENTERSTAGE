@@ -18,7 +18,7 @@ public class RoboLift {
 
     private final ElapsedTime runtime = new ElapsedTime();
     private final ElapsedTime timeout = new ElapsedTime();
-    public static final int LIFT_MAXPOS = 8200;
+    public static final int LIFT_MAXPOS = 8000;
     public static final int LIFT_MINPOS = 10;
     public static final int HANG_POS = 400;
     public static final double LIFT_MAX_SPEED = 1.0; // NEED TO BE SET
