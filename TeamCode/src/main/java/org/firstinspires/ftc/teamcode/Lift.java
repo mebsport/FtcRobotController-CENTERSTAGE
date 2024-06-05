@@ -20,8 +20,10 @@ public class Lift {
 
     private final ElapsedTime runtime = new ElapsedTime();
     private final ElapsedTime timeout = new ElapsedTime();
-    public static final int LIFT_MAXPOS = 2300; // NEED TO BE SET
-    public static final int LIFT_MINPOS = 10; // NEED TO BE SET
+    public static final int LIFT_MAXPOS = 1810; // NEED TO BE SET
+    public static final int LIFT_MINPOS = 0; // NEED TO BE SET
+
+    public static int PREVIOUS_LIFT_POS = 0;
     public static final int LIFT_MAX_SPEED = -999; // NEED TO BE SET
     public static final double LIFT_MANUAL_SPEED = LIFT_MAX_SPEED * .90;
     public static final double LIFT_DOWN_POWER = .3;
@@ -162,6 +164,9 @@ public class Lift {
     public void setPosition(int targetPos, double targetPow) {
         int tp = Math.max(Math.min(targetPos, LIFT_MAXPOS), LIFT_MINPOS);
         isRising = ((tp <= previousTargetPos));
+        if(targetPos>=100 && previousTargetPos<targetPos){
+            hardware.pixelCabin.goToReleasePosition();
+        }
         liftMotor.setTargetPosition(tp);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         double tpw = targetPow;

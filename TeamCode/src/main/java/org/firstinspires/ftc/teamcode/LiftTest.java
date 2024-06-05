@@ -126,7 +126,7 @@ public class LiftTest extends OpMode {
     @Override
     public void start() {
         hardware.updateValues();
-
+        hardware.pixelCabin.goToReleasePosition();
         hardware.logMessage(false, "MyFirstJava", "Start Button Pressed");
         super.start();
         hardware.start();

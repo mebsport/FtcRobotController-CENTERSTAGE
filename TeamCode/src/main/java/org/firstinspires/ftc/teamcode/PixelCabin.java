@@ -10,11 +10,11 @@ public class PixelCabin {
     private Servo cabinRotationServo = null;
     private Servo cabinHoldServo = null;
 
-    public static final double OPEN_POS = .38; // NEED TO BE SET
-    public static final double CLOSE_POS = .5; // NEED TO BE SET
-    public static final double INTAKE_POS = .290; // NEED TO BE SET
-    public static final double RELEASE_POS = .581; // NEED TO BE SET
-    public static final double STOW_POS = .290; // NEED TO BE SET
+    public static final double OPEN_POS = .274; // NEED TO BE SET
+    public static final double CLOSE_POS = .352; // NEED TO BE SET
+    public static final double INTAKE_POS = .48; // NEED TO BE SET
+    public static final double RELEASE_POS = .796; // NEED TO BE SET
+    public static final double STOW_POS = .48; // NEED TO BE SET
     private boolean isOpen = false;
     private boolean isInReleasePosition = false;
 

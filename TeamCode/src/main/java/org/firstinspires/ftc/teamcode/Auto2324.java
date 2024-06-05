@@ -190,8 +190,15 @@ public class Auto2324 extends OpMode {
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(45))
-                                .forward(14)
-                                .back(14)
+                                .forward(17)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(17)
                                 .turn(Math.toRadians(-45))
                                 .back(FIRSTLEFTRIGHTDISTANCE + 2)
                                 //Place Pixel On Board
@@ -226,8 +233,15 @@ public class Auto2324 extends OpMode {
                         hardware.logMessage(false, "Auto2324", "Spike Mark 2");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .forward(30)
-                                .back(30)
+                                .forward(33)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(33)
                                 //Place Pixel On Board
                                 .forward(3)
                                 .strafeRight(3)
@@ -261,8 +275,15 @@ public class Auto2324 extends OpMode {
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .strafeRight(13)
-                                .forward(25)
-                                .back(26)
+                                .forward(28)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(29)
                                 .strafeLeft(13)
                                 //Place Pixel On Board
                                 .forward(3)

@@ -205,6 +205,7 @@ public class OpMode2324 extends OpMode {
         telemetry.addData("Next Command: ", hardware.robo130.getNextCommandIndex());
         telemetry.addData("Status", "Running");
         telemetry.addData("Lift position: ", hardware.lift.getCurrentPos());
+        telemetry.addData("Cabin Rotate Position", hardware.cabinRotationServo.getPosition());
         telemetry.update();
     }
 
