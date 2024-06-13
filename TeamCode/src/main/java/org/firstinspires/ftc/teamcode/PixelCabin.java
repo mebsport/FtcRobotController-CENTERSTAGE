@@ -14,9 +14,11 @@ public class PixelCabin {
     public static final double CLOSE_POS = .352; // NEED TO BE SET
     public static final double INTAKE_POS = .48; // NEED TO BE SET
     public static final double RELEASE_POS = .796; // NEED TO BE SET
-    public static final double STOW_POS = .48; // NEED TO BE SET
+    public static final double STOW_POS = .52; // NEED TO BE SET
     private boolean isOpen = false;
     private boolean isInReleasePosition = false;
+
+    private boolean isInIntakePosition = false;
 
 
     public PixelCabin(OpMode opMode, Hardware hardware) {
@@ -29,6 +31,7 @@ public class PixelCabin {
         cabinHoldServo = hardware.cabinHoldServo;
         goToStowPosition();
         holdPixel();
+        isInIntakePosition = false;
     }
 
     public void releasePixel() {
@@ -37,23 +40,53 @@ public class PixelCabin {
     }
 
     public void holdPixel() {
+        goToIntakePosition();
+        cabinHoldServo.setPosition(CLOSE_POS);
+        goToStowPosition();
+        isOpen = false;
+        isInIntakePosition = false;
+    }
+    /* new method but not enough time
+    public void holdPixel(boolean isTeleOp) {
+        goToIntakePosition();
+        cabinHoldServo.setPosition(CLOSE_POS);
+        if(!isTeleOp){
+        goToStowPosition();
+        }
+        isOpen = false;
+        if(!isTeleOp){
+        isInIntakePosition = false;
+        }else{
+        isInIntakePosition = true;
+        }
+
+    }
+     */
+    public void teleHoldPixel(){
+        goToIntakePosition();
         cabinHoldServo.setPosition(CLOSE_POS);
         isOpen = false;
+        isInIntakePosition = true;
     }
+
+
 
     public void goToIntakePosition() {
         cabinRotationServo.setPosition(INTAKE_POS);
         isInReleasePosition = false;
+        isInIntakePosition = true;
     }
 
     public void goToReleasePosition() {
         cabinRotationServo.setPosition(RELEASE_POS);
         isInReleasePosition = true;
+        isInIntakePosition = false;
     }
 
     public void goToStowPosition() {
         cabinRotationServo.setPosition(STOW_POS);
         isInReleasePosition = false;
+        isInIntakePosition = false;
     }
 
     public void setDoorPosition(double position) {
@@ -66,9 +99,18 @@ public class PixelCabin {
 
     public void toggleDoor() {
         if (isOpen) {
-            holdPixel();
+            teleHoldPixel();
         } else {
             releasePixel();
+        }
+    }
+
+    public void toggleStow(){
+        if(isInReleasePosition || isInIntakePosition){
+            goToStowPosition();
+        }
+        else{
+            goToIntakePosition();
         }
     }
 

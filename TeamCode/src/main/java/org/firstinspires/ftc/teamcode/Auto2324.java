@@ -19,7 +19,7 @@ public class Auto2324 extends OpMode {
     private boolean doParking = false;
     private int selectedSpikemark = -999;
     private int selectedTag = -999;
-    private final int autoLiftPos = 920;
+    private final int autoLiftPos = 770; //was originally 920
     private boolean SKIPCAMERA = true;
     private final TrajectorySequence previousSequence = null;
     private boolean commandsGrabbed = false;
@@ -129,6 +129,8 @@ public class Auto2324 extends OpMode {
             hardware.drive.setPoseEstimate(startPose);
 
             if (!commandsGrabbed) {
+                hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
+                hardware.robo130.addCommand(new RCWait(hardware, 0.3));
                 if (isRed & isLeftStartingPos) {
                     //RED LEFT
                     hardware.logMessage(false, "Auto2324", "Red Left");
@@ -136,10 +138,19 @@ public class Auto2324 extends OpMode {
                         hardware.logMessage(false, "Auto2324", "Spike Position 1");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .strafeLeft(13)
+                                .strafeLeft(11)
                                 .forward(25)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .back(26)
-                                .strafeRight(13)
+                                .strafeRight(11)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -148,8 +159,17 @@ public class Auto2324 extends OpMode {
                         hardware.logMessage(false, "Auto2324", "Spike Position 2");
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .forward(30)
-                                .back(30)
+                                .forward(32)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(32)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -159,8 +179,17 @@ public class Auto2324 extends OpMode {
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(-45))
-                                .forward(14)
-                                .back(14)
+                                .forward(12)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(12)
                                 .turn(Math.toRadians(45))
                                 .back(FIRSTLEFTRIGHTDISTANCE + 2)
                                 .resetAccelConstraint()
@@ -190,32 +219,45 @@ public class Auto2324 extends OpMode {
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(45))
-                                .forward(17)
+                                .forward(10)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .back(17)
+                                .back(10)
                                 .turn(Math.toRadians(-45))
                                 .back(FIRSTLEFTRIGHTDISTANCE + 2)
-                                //Place Pixel On Board
+                                //Place Pixel On Board pt. 1
                                 .forward(3)
                                 .strafeRight(3)
                                 .forward(5)
                                 .turn(Math.toRadians(-90))
                                 .forward(33)
                                 .strafeLeft(INNER_TAG_DISTANCE)
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(5)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, autoLiftPos, .5, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                //Place Pixel On Board pt. 2
+                                .forward(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .back(3)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCWait(hardware, 1.0));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
@@ -239,6 +281,8 @@ public class Auto2324 extends OpMode {
                         ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .back(33)
@@ -249,21 +293,31 @@ public class Auto2324 extends OpMode {
                                 .turn(Math.toRadians(-90))
                                 .forward(33)
                                 .strafeLeft(CENTER_TAG_DISTANCE)
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(5)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, autoLiftPos, .5, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                //Place Pixel On Board
+                                .forward(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 1.0));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(3)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 50, 50, false));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .back(3)
                                 .strafeRight(CENTER_TAG_DISTANCE + 24)
                                 .forward(12)
                                 .resetAccelConstraint()
@@ -281,6 +335,8 @@ public class Auto2324 extends OpMode {
                         ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .back(29)
@@ -292,21 +348,31 @@ public class Auto2324 extends OpMode {
                                 .turn(Math.toRadians(-90))
                                 .forward(33)
                                 .strafeLeft(OUTER_TAG_DISTANCE)
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(5)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, autoLiftPos, .5, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 1.0));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .back(3)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 50, 50, false));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .back(3)
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 4.0))
                                 .strafeRight(OUTER_TAG_DISTANCE + 24)
                                 .forward(12)
                                 .resetAccelConstraint()
@@ -322,9 +388,17 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .strafeLeft(10)
                                 .forward(25)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .back(26)
                                 .strafeRight(10)
                                 //Place Pixel On Board
@@ -334,21 +408,29 @@ public class Auto2324 extends OpMode {
                                 .turn(Math.toRadians(90))
                                 .forward(33)
                                 .strafeRight(OUTER_TAG_DISTANCE)
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(5)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, autoLiftPos, .5, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 1.0));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .back(3)
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 50, 50, false));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .back(3)
                                 .strafeLeft(OUTER_TAG_DISTANCE + 24)
                                 .forward(12)
                                 .resetAccelConstraint()
@@ -359,8 +441,17 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .forward(30)
-                                .back(30)
+                                .forward(31)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(31)
                                 //Place Pixel On Board
                                 .forward(3)
                                 .strafeLeft(3)
@@ -368,21 +459,30 @@ public class Auto2324 extends OpMode {
                                 .turn(Math.toRadians(90))
                                 .forward(33)
                                 .strafeRight(CENTER_TAG_DISTANCE)
-                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(5)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, autoLiftPos, .5, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 1.0));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .back(3)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 50, 50, false));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .back(3)
                                 .strafeLeft(CENTER_TAG_DISTANCE + 24)
                                 .forward(12)
                                 .resetAccelConstraint()
@@ -394,8 +494,17 @@ public class Auto2324 extends OpMode {
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(-45))
-                                .forward(10)
-                                .back(10)
+                                .forward(12)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(12)
                                 .turn(Math.toRadians(45))
                                 .back(FIRSTLEFTRIGHTDISTANCE + 2)
                                 //Place Pixel On Board
@@ -404,22 +513,32 @@ public class Auto2324 extends OpMode {
                                 .forward(5)
                                 .turn(Math.toRadians(90))
                                 .forward(33)
-                                .strafeRight(INNER_TAG_DISTANCE)
+                                .strafeRight(INNER_TAG_DISTANCE) //strafe right a few inches
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
-                                .forward(5)
                                 .resetAccelConstraint()
                                 .build()
                         ));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, autoLiftPos, .5, false));
                         hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .forward(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
                         hardware.robo130.addCommand(new RCWait(hardware, 1.0));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL / 2.0))
+                                .back(5)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
                         hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
-                        hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
                         hardware.robo130.addCommand(new RCLiftGoToPosition(hardware, 50, 50, false));
+                        hardware.robo130.addCommand(new RCRotateCabin(hardware, RCRotateCabin.CMD_STOW, false));
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .back(3)
                                 .strafeLeft(INNER_TAG_DISTANCE + 22)
                                 .forward(12)
                                 .resetAccelConstraint()
@@ -433,13 +552,22 @@ public class Auto2324 extends OpMode {
 
                     if (selectedSpikemark == 1) {
                         hardware.logMessage(false, "Auto2324", "Spike Mark 1");
-
+                        hardware.pixelCabin.holdPixel();
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
                                 .forward(FIRSTLEFTRIGHTDISTANCE)
                                 .turn(Math.toRadians(45))
-                                .forward(10)
-                                .back(10)
+                                .forward(11)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(11)
                                 .turn(Math.toRadians(-45))
                                 .back(FIRSTLEFTRIGHTDISTANCE)
                                 .resetAccelConstraint()
@@ -450,8 +578,17 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .forward(30)
-                                .back(30)
+                                .forward(33)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(33)
                                 .resetAccelConstraint()
                                 .build()
                         ));
@@ -460,10 +597,19 @@ public class Auto2324 extends OpMode {
 
                         hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(startPose)
                                 .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
-                                .strafeRight(13)
-                                .forward(25)
-                                .back(26)
-                                .strafeLeft(13)
+                                .strafeRight(12)
+                                .forward(28)
+                                .resetAccelConstraint()
+                                .build()
+                        ));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_RELEASE, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRotateDoor(hardware, RCRotateDoor.CMD_HOLD, false));
+                        hardware.robo130.addCommand(new RCWait(hardware, 0.3));
+                        hardware.robo130.addCommand(new RCRoadrunner(hardware, hardware.drive.trajectorySequenceBuilder(RCRoadrunner.getPreviousEndPoint())
+                                .setAccelConstraint(SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL * .75))
+                                .back(29)
+                                .strafeLeft(12)
                                 .resetAccelConstraint()
                                 .build()
                         ));

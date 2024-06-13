@@ -26,6 +26,8 @@ public class OpMode2324 extends OpMode {
     private double currentGasPedalPower = 1.0;
     private boolean reverseControls = false;
 
+
+
     private int liftTargetPosition = 0;
     private boolean liftManualMode = false;
     private int liftPreviousManualPosition = Lift.LIFT_MINPOS;
@@ -93,6 +95,7 @@ public class OpMode2324 extends OpMode {
         if (hardware.gamepad1_current_left_bumper && !hardware.gamepad1_previous_left_bumper) {
             reverseControls = !reverseControls;
         }
+
 
         //Roadrunner Drive Controls
         // Read pose
@@ -175,8 +178,12 @@ public class OpMode2324 extends OpMode {
             hardware.pixelCabin.toggleRotate();
         }
 
-        //Drone Launcher
         if (hardware.gamepad2_current_x && !hardware.gamepad2_previous_x) {
+            hardware.pixelCabin.toggleStow();
+        }
+
+        //Drone Launcher
+        if (hardware.gamepad2_current_y && !hardware.gamepad2_previous_y) {
             hardware.droneLauncher.toggleLaunch();
         } else if (hardware.gamepad2_current_dpad_left && !hardware.gamepad2_previous_dpad_left) {
             hardware.droneLauncher.goLaunch();
