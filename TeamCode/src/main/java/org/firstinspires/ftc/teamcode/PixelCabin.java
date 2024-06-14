@@ -12,9 +12,9 @@ public class PixelCabin {
 
     public static final double OPEN_POS = .274; // NEED TO BE SET
     public static final double CLOSE_POS = .352; // NEED TO BE SET
-    public static final double INTAKE_POS = .48; // NEED TO BE SET
-    public static final double RELEASE_POS = .796; // NEED TO BE SET
-    public static final double STOW_POS = .52; // NEED TO BE SET
+    public static final double INTAKE_POS = .430; // NEED TO BE SET
+    public static final double RELEASE_POS = .800; // NEED TO BE SET
+    public static final double STOW_POS = .500; // NEED TO BE SET
     private boolean isOpen = false;
     private boolean isInReleasePosition = false;
 
